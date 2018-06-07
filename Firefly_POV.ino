@@ -104,7 +104,7 @@ enum STRIP_TYPE {
 //
 // increment this every time you make ANY change to the Settings or Calibrations structure
 // this way we can know when to revert to defaults after a code update
-byte SettingsVersion = 3;
+byte SettingsVersion = 4;
 struct Settings_t {
 
 	//strip
@@ -126,6 +126,7 @@ struct Settings_t {
 	int nOrientationPin;		// pin for orientation (left to right/right to left {upside down}) control, 0 for no orientation control
 	byte nOrientationDeadZone;	// dead zone for orientation flip control, in percent of full range of control
 	byte nOrientationInverts;	// invert orientation in relation to control
+	byte nFullTimeNav;			// full time nav on tips
 
 	// messages
 	byte nNumMessages;			// Number of active messages
@@ -164,6 +165,7 @@ void LoadDefaults() {
 	Settings.nOrientationPin = 6;
 	Settings.nOrientationDeadZone = 5;
 	Settings.nOrientationInverts = 1;
+	Settings.nFullTimeNav = true;
 
 	Settings.nNumMessages = 9;
 	strcpy( Settings.sMessage[0], " ");
@@ -353,8 +355,9 @@ void RenderFrame() {
 		default:
 			break;
 		}
-		// all the time nav
-		if (i < 3 || i > 28) {
+
+		// full time nav
+		if( ( i < 3 || i > 28) && Settings.nFullTimeNav) {
 			SetPixel(i, Effect_Navigation(iprime, 255));
 		}
 	}
@@ -901,6 +904,7 @@ void ProcessCommand( char *sCommand, int nPort) {
 			}
 			
 			SerialPrint( F("Pixel Multiplier     = "), nPort); SerialPrintln( Settings.nPixelsMulti, nPort); 
+			SerialPrint( F("Full Time Nav        = "), nPort); SerialPrintln(Settings.nFullTimeNav, nPort);
 
 			SerialPrintln( nPort);
 			SerialPrint( F("Active Messages = "), nPort); SerialPrintln( Settings.nNumMessages, nPort);
@@ -1039,6 +1043,13 @@ void ProcessCommand( char *sCommand, int nPort) {
 					SerialPrint( F("Pixel Multi set to "), nPort); SerialPrintln( Settings.nPixelsMulti , nPort);
 					break;
 			}
+			break;
+
+		case 'V':
+		case 'v':
+			// Set full time nav
+			Settings.nFullTimeNav = constrain(sCommand[1] - '0', 0, 1);
+			SerialPrint(F("Full time nav set to "), nPort); SerialPrintln(Settings.nFullTimeNav, nPort);
 			break;
 
 		case 'z':
