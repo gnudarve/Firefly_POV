@@ -1,0 +1,16 @@
+Message Formatting Codes
+
+/nav - Navigation lights, full bright
+/bp1 - Background: Navigation lights (red/green)
+/bp2 - Background: Rainbow Animation
+/bp3 - Background: Rainbow Tartan
+/bp4 - Background: Kalaidescope
+/bp5 - Background: Sparkle 1
+/bp6 - Background: Sparkle 2
+/bp7 - Background: Fire 1
+/bp8 - Background: Fire 2
+/bp9 - Background: Alien Skin
+/bc(r,g,b) - Set background solid color r,g,b value (0-255)
+/fc(r,g,b) - Set font color r,g,b value (0-255)
+/b1-9 - Set background brightness to value
+/f1-9 - Set font brightness to value
