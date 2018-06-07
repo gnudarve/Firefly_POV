@@ -14,17 +14,21 @@
 #define g_nASCIIStart Lucida_Console_nASCIIStart
 #define g_nASCIIEnd Lucida_Console_nASCIIEnd
 
-#define DATA_PIN      17
-#define CLOCK_PIN     13
 
 // setup serial class for bluetooth comms, platform dependant
 #if defined(TEENSYDUINO) 
 //  --------------- Teensy -----------------
 #define BTSerial Serial3
+
+#define DATA_PIN      17
+#define CLOCK_PIN     13
 #else 
 // --------------- Arduino ------------------
 #include <SoftwareSerial.h>
 SoftwareSerial BTSerial(8, 7); // RX, TX
+
+#define DATA_PIN      11
+#define CLOCK_PIN     13
 #endif
 // serial communication settings
 #define USB_BAUD_RATE 115200
