@@ -20,6 +20,7 @@
 //  --------------- Teensy -----------------
 #define BTSerial Serial3
 
+// LED strip pins
 #define DATA_PIN      17
 #define CLOCK_PIN     13
 #else 
@@ -27,9 +28,11 @@
 #include <SoftwareSerial.h>
 SoftwareSerial BTSerial(8, 7); // RX, TX
 
+// LED strip pins
 #define DATA_PIN      11
 #define CLOCK_PIN     13
 #endif
+
 
 // serial communication settings
 #define USB_BAUD_RATE 115200
@@ -113,8 +116,8 @@ struct Settings_t {
 	unsigned int nPixelsMulti;	// Multiply pixels - each internal pixel fills nPixelsMulti LED pixels on the strip for better long distance viewing and brightness
 
 	// max/min frame rates
-	int nMinFrameRate;			// min frame rate
-	int nMaxFrameRate;			// max frame rate
+	unsigned int nMinFrameRate;			// min frame rate
+	unsigned int nMaxFrameRate;			// max frame rate
 	
 	// font settings
 	byte nInterCharFrameGap;	// this is the number of frames between each char 
@@ -137,13 +140,13 @@ struct Settings_t {
 } Settings;
 
 struct Calibrations_t {
-	int nFrameRate_LowVal;  //default is 1000 (microseconds)
-	int nFrameRate_HighVal;  // default is 2000 (microseconds)
-	int nMessageSelect_LowVal;  //default is 1000 (microseconds)
-	int nMessageSelect_HighVal;  // default is 2000 (microseconds)
-	int nOrientation_LowVal;  //default is 1000 (microseconds)
-	int nOrientation_HighVal;  // default is 2000 (microseconds)
-	int nOrientation_Normal;  // default is 50 (mapped 0-101)
+	unsigned int nFrameRate_LowVal;  //default is 1000 (microseconds)
+	unsigned int nFrameRate_HighVal;  // default is 2000 (microseconds)
+	unsigned int nMessageSelect_LowVal;  //default is 1000 (microseconds)
+	unsigned int nMessageSelect_HighVal;  // default is 2000 (microseconds)
+	unsigned int nOrientation_LowVal;  //default is 1000 (microseconds)
+	unsigned int nOrientation_HighVal;  // default is 2000 (microseconds)
+	unsigned int nOrientation_Normal;  // default is 50 (mapped 0-101)
 } Calibrations;
 
 // LoadDefaults
@@ -1122,7 +1125,7 @@ void UpdateInputs() {
 
 				if( abs(g_nLastPWMFrameRateValue - n_Raw) > PWM_NOISEFLOOR) {
 					g_nLastPWMFrameRateValue = n_Raw;
-					g_nFrameRate = constrain( map( n_Raw, Calibrations.nFrameRate_LowVal, Calibrations.nFrameRate_HighVal, Settings.nMinFrameRate, Settings.nMaxFrameRate+1), Settings.nMinFrameRate, Settings.nMaxFrameRate);
+					g_nFrameRate = map( n_Raw, Calibrations.nFrameRate_LowVal, Calibrations.nFrameRate_HighVal, Settings.nMinFrameRate, Settings.nMaxFrameRate+1);
 
 					// calculate plasma settings
 					if (g_nEffectID == 3) {
