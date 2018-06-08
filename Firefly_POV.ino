@@ -30,6 +30,7 @@ SoftwareSerial BTSerial(8, 7); // RX, TX
 #define DATA_PIN      11
 #define CLOCK_PIN     13
 #endif
+
 // serial communication settings
 #define USB_BAUD_RATE 115200
 #define BT_BAUD_RATE 9600
