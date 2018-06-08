@@ -1063,10 +1063,6 @@ void ProcessCommand( char *sCommand, int nPort) {
 			SerialPrint( F("Orientation deadzone set to "), nPort); SerialPrint( n, nPort); SerialPrintln( F(" percent."), nPort);
 			break;
 
-			// make sure frame rate is inside new constraints
-			g_nFrameRate = constrain( g_nFrameRate, Settings.nMinFrameRate, Settings.nMaxFrameRate);
-			break;
-
 		case 'h':
 		case '?':
 			SerialPrint( F("FireFly POV - By Buck McGibbony and Paul Drucker - Version "), nPort); SerialPrintln( VERSION, nPort);
