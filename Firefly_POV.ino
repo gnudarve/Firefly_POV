@@ -44,17 +44,16 @@ SoftwareSerial BTSerial(8, 7); // RX, TX
 #define PWM_TIMEOUT 25000UL
 #define PWM_NOISEFLOOR 10
 
-#define COOLING_MIN 80
-#define COOLING_MAX 180
+#define COOLING_MAX 130
+#define COOLING_MIN 120
 
 #define SPARKING_MIN 20
-#define SPARKING_MAX 120
-#define SPARKING_THRESH .8
-//int SPARKING = 90;
-//int COOLING = 10;
-int SPARKING = SPARKING_MIN;
-int COOLING = COOLING_MAX;
+#define SPARKING_MAX 100
 
+#define SPARKING_THRESH .8
+
+int COOLING = COOLING_MAX;
+int SPARKING = SPARKING_MIN;
 
 // Globals
 
