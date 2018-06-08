@@ -9,8 +9,7 @@
 
 # User-specific files (MonoDevelop/Xamarin Studio/Visual Micro)
 *.userprefs
-*.vcxproj
-*.vcxproj.filters
+
 
 # Build results
 [Dd]ebug/
