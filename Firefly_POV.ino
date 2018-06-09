@@ -1089,12 +1089,13 @@ void ProcessCommand( char *sCommand, int nPort) {
 			SerialPrintln( F("            and strip orientation y = 0(up) or 1(down)"), nPort);
 			SerialPrintln( F("   TXx    - Set Pixel Multiplier to x (1-4)"), nPort);
 			SerialPrintln( F("   TSx    - Set Strip Type to x (1=WS2812B, 2=LPD8806)"), nPort);
+			SerialPrintln( F("   Vx     - Set full time nav lights (0=off, 1=on)"), nPort);
 			SerialPrintln( F("   C      - Start calibration sequence"), nPort);
 			SerialPrintln( F("   L      - List settings"), nPort);
 			SerialPrintln( F("   D      - Load default settings"), nPort);
 			SerialPrintln( F("   R      - Reload settings from EEPROM"), nPort);
 			SerialPrintln( F("   S      - Save settings to EEPROM"), nPort);
-		break;
+			break;
 	
 		default:
 			SerialPrintln( F("Command unrecognized.  Type '?' or 'h' for help."), nPort);
