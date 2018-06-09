@@ -44,13 +44,13 @@ SoftwareSerial BTSerial(8, 7); // RX, TX
 #define PWM_TIMEOUT 25000UL
 #define PWM_NOISEFLOOR 10
 
-#define COOLING_MAX 150
-#define COOLING_MIN 100
+#define COOLING_MAX 180
+#define COOLING_MIN 60
 
-#define SPARKING_MIN 20
-#define SPARKING_MAX 120
+#define SPARKING_MIN 30
+#define SPARKING_MAX 40
 
-#define SPARKING_THRESH .8
+#define SPARKING_THRESH .9
 
 int COOLING = COOLING_MAX;
 int SPARKING = SPARKING_MIN;
@@ -504,26 +504,27 @@ void Effect_PlasmaThrust(int bright)
 		case 6: cPallette = CRGBPalette16(CRGB::Black, CRGB::Blue, CRGB::Aqua, CRGB::White); break;
 	}
 
+	// Cool down every cell a little
+	for (int i = 0; i < nEffectWidth; i++) {
+		heat[i] = qsub8( heat[i], random8(nCoolingPrime) + 2);
+		//heat[i] = qsub8(heat[i], random8( COOLING) + 2);
+	}
+
 	// Constant heat source at center
 	heat[0] = qadd8(heat[0], random8(4));
 	heat[1] = qadd8(heat[1], random8(4));
 
-	// Cool down every cell a little
-	for (int i = 0; i < nEffectWidth; i++) {
-		heat[i] = qsub8(heat[i], random8(nCoolingPrime + 2));
-		//heat[i] = qsub8(heat[i], random8( COOLING) + 2);
-	}
-
 	// Heat from each cell drifts 'up' and diffuses a little
 	for (int k = nEffectWidth - 1; k >= 2; k--) {
-		heat[k] = (heat[k - 1] + heat[k - 2] + heat[k - 2]) / 3;
+		heat[k] = ( heat[k - 1] + heat[k - 2] + heat[k - 2]) / 3;
 	}
 
 	// Randomly ignite new 'sparks' of heat near the bottom
 	if (random8() < SPARKING) {
-		// doing this so it has a assymetrical effect across the two sides in missle mode
-		for (int j = random8(2); j <= 3; j += 2) {
-			heat[j] = qadd8(heat[j], random8(100, 200));
+		// doing this so it has a assymetrical effect across the two sides
+		for( int j = random8( 2); j <= 3; j += 2) {
+			heat[j] = qadd8( heat[j],  random8( 128, 255));
+			heat[j+1] = qadd8(heat[j+1], random8(128, 255));
 		}
 	}
 
@@ -531,8 +532,8 @@ void Effect_PlasmaThrust(int bright)
 	//SetPixel(nPixel, ColorFromPalette(HeatColors_p, heat[nPixel]));
 
 	for (int j = 0; j < nEffectWidth / 2; j++) {
-		g_cPixels[nEffectWidth / 2 + j] = ColorFromPalette(cPallette, scale8(heat[j * 2], 240), g_nBackBright);
-		g_cPixels[nEffectWidth / 2 - j - 1] = ColorFromPalette(cPallette, scale8(heat[(j * 2) + 1], 240), g_nBackBright);
+		g_cPixels[nEffectWidth / 2 + j] = ColorFromPalette( cPallette, scale8( heat[j * 2], 240), g_nBackBright);
+		g_cPixels[nEffectWidth / 2 - j - 1] = ColorFromPalette( cPallette, scale8( heat[(j * 2) + 1], 240), g_nBackBright);
 		//leds[NUM_LEDS / 2 + j] = HeatColor(heat[j*2]);
 		//leds[NUM_LEDS / 2 - j - 1] = HeatColor(heat[(j*2)+1]);
 	}
