@@ -523,8 +523,8 @@ void Effect_PlasmaThrust(int bright)
 	if (random8() < SPARKING) {
 		// doing this so it has a assymetrical effect across the two sides
 		for( int j = random8( 2); j <= 3; j += 2) {
-			heat[j] = qadd8( heat[j],  random8( 128, 255));
-			heat[j+1] = qadd8(heat[j+1], random8(128, 255));
+			heat[j] = qadd8( heat[j],  random8( 32, 240));
+			heat[j+1] = qadd8(heat[j+1], random8(32, 240));
 		}
 	}
 
