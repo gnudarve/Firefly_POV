@@ -490,18 +490,21 @@ void Effect_PlasmaThrust(int bright)
 {
 	int nEffectWidth = g_nFontPixels * Settings.nPixelsMulti;
 	// Array of temperature readings at each simulation cell
-	static byte heat[g_nStripPixels] = { 0 };
+	static uint16_t heat[g_nStripPixels] = { 0 };
 	int nCoolingPrime = (COOLING * 10) / nEffectWidth;
 	CRGBPalette16 cPallette;
 
 	switch( g_nEffectPalleteID) {
 		case 1: cPallette = HeatColors_p; break;
-		case 2: cPallette = CRGBPalette16(CRGB::Black, CRGB::Green, CRGB::Blue, CRGB::Violet); break;
-		case 3: cPallette = CRGBPalette16(CRGB::Black, CRGB::Green, CRGB::Aqua, CRGB::Violet); break;
+		case 2: cPallette = CRGBPalette16(CRGB::Black, CRGB::Green, CRGB::Blue, CRGB::Red); break;
+		case 3: cPallette = CRGBPalette16(CRGB::Black, CRGB::Red, CRGB::Green, CRGB::Blue); break;
 		default:
 		case 4: cPallette = CRGBPalette16(CRGB::Black, CRGB::Gold, CRGB::Red, CRGB::DarkBlue); break;
-		case 5: cPallette = CRGBPalette16(CRGB::Black, CRGB::Blue, CRGB::Yellow, CRGB::White); break;
-		case 6: cPallette = CRGBPalette16(CRGB::Black, CRGB::Blue, CRGB::Aqua, CRGB::White); break;
+
+		// Miako's
+		case 5: cPallette = CRGBPalette16(CRGB::Black, CRGB::YellowGreen, CRGB::Blue, CRGB::Blue); break;
+
+		case 6: cPallette = CRGBPalette16(CRGB::Black, CRGB::Blue, CRGB::Aqua, CRGB::Orange); break;
 	}
 
 	// Cool down every cell a little
