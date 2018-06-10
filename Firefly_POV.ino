@@ -45,10 +45,10 @@ SoftwareSerial BTSerial(8, 7); // RX, TX
 #define PWM_NOISEFLOOR 10
 
 #define COOLING_MAX 190
-#define COOLING_MIN 70
+#define COOLING_MIN 65
 
 #define SPARKING_MIN 25
-#define SPARKING_MAX 35
+#define SPARKING_MAX 30
 
 #define SPARKING_THRESH .9
 
