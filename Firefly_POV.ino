@@ -44,11 +44,11 @@ SoftwareSerial BTSerial(8, 7); // RX, TX
 #define PWM_TIMEOUT 25000UL
 #define PWM_NOISEFLOOR 10
 
-#define COOLING_MAX 180
-#define COOLING_MIN 60
+#define COOLING_MAX 190
+#define COOLING_MIN 70
 
-#define SPARKING_MIN 30
-#define SPARKING_MAX 40
+#define SPARKING_MIN 25
+#define SPARKING_MAX 35
 
 #define SPARKING_THRESH .9
 
@@ -488,8 +488,8 @@ inline CRGB Effect_Navigation( int i, uint8_t bright) {
 //
 void Effect_PlasmaThrust(int bright)
 {
-	int nEffectWidth = g_nFontPixels * Settings.nPixelsMulti;
 	// Array of temperature readings at each simulation cell
+	int nEffectWidth = g_nFontPixels * Settings.nPixelsMulti;
 	static uint16_t heat[g_nStripPixels] = { 0 };
 	int nCoolingPrime = (COOLING * 10) / nEffectWidth;
 	CRGBPalette16 cPallette;
@@ -497,13 +497,10 @@ void Effect_PlasmaThrust(int bright)
 	switch( g_nEffectPalleteID) {
 		case 1: cPallette = HeatColors_p; break;
 		case 2: cPallette = CRGBPalette16(CRGB::Black, CRGB::Green, CRGB::Blue, CRGB::Red); break;
-		case 3: cPallette = CRGBPalette16(CRGB::Black, CRGB::Red, CRGB::Green, CRGB::Blue); break;
+		case 3: cPallette = CRGBPalette16(CRGB::Black, CRGB::Red, CRGB::Green, CRGB::Blue); break; // miako
 		default:
-		case 4: cPallette = CRGBPalette16(CRGB::Black, CRGB::Gold, CRGB::Red, CRGB::DarkBlue); break;
-
-		// Miako's
-		case 5: cPallette = CRGBPalette16(CRGB::Black, CRGB::YellowGreen, CRGB::Blue, CRGB::Blue); break;
-
+		case 4: cPallette = CRGBPalette16(CRGB::Black, CRGB::Gold, CRGB::Red, CRGB::DarkBlue); break;  // paul
+		case 5: cPallette = CRGBPalette16(CRGB::Black, CRGB::YellowGreen, CRGB::Blue, CRGB::Blue); break;  // miako
 		case 6: cPallette = CRGBPalette16(CRGB::Black, CRGB::Blue, CRGB::Aqua, CRGB::Orange); break;
 	}
 
@@ -514,8 +511,8 @@ void Effect_PlasmaThrust(int bright)
 	}
 
 	// Constant heat source at center
-	heat[0] = qadd8(heat[0], random8(4));
-	heat[1] = qadd8(heat[1], random8(4));
+	//heat[0] = qadd8(heat[0], random8(32));
+	//heat[1] = qadd8(heat[1], random8(32));
 
 	// Heat from each cell drifts 'up' and diffuses a little
 	for (int k = nEffectWidth - 1; k >= 2; k--) {
@@ -526,8 +523,8 @@ void Effect_PlasmaThrust(int bright)
 	if (random8() < SPARKING) {
 		// doing this so it has a assymetrical effect across the two sides
 		for( int j = random8( 2); j <= 3; j += 2) {
-			heat[j] = qadd8( heat[j],  random8( 32, 240));
-			heat[j+1] = qadd8(heat[j+1], random8(32, 240));
+			heat[j] = qadd8( heat[j],  random8( 128, 255));
+			heat[j+1] = qadd8(heat[j+1], random8(128, 255));
 		}
 	}
 
