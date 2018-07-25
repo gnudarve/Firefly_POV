@@ -55,12 +55,7 @@ int COOLING = COOLING_MAX;
 int SPARKING = SPARKING_MIN;
 
 // Globals
-unsigned long g_ulNextPWMSampleTime = 0;
-unsigned long g_ulNextFrameTime = 0;
-unsigned long g_nLastPWMFrameRateValue = 0;
-unsigned long g_nLastMessageSelectValue = 0;
 unsigned long g_nLastPWMOrientationValue = 0;
-byte g_nCurrentInputCheck = 0;
 
 // render states
 unsigned int g_nFrameRate = 0;		// frame rate
@@ -92,8 +87,8 @@ CRGB g_cPixels[g_nStripPixels];
 //g_cPixels = new CRGB[g_nStripPixels];
 
 enum STRIP_TYPE {
-    aWS2812B = 1,
-    aLPD8806 = 2,
+	aWS2812B = 1,
+	aLPD8806 = 2,
 };
 
 
@@ -108,16 +103,16 @@ struct Settings_t {
 	STRIP_TYPE nStripType;		// type of LED strip
 	unsigned int nPixelsMulti;	// Multiply pixels - each internal pixel fills nPixelsMulti LED pixels on the strip for better long distance viewing and brightness
 
-	// max/min frame rates
+								// max/min frame rates
 	unsigned int nMinFrameRate;			// min frame rate
 	unsigned int nMaxFrameRate;			// max frame rate
-	
-	// font settings
+
+										// font settings
 	byte nInterCharFrameGap;	// this is the number of frames between each char 
 	byte nBackBrightness;		// 0-9
 	byte nFontBrightness;		// 0-9
 
-	// PWM input settings
+								// PWM input settings
 	int nFrameRatePin;			// pin for frame rate control, set to 0 for no frame rate control, default frame rate will then be nMaxFrameRate
 	int nMessageSelectPin;		// Pin for pattern select control, 0 - -15 for analog inputs along A0-A15
 	int nOrientationPin;		// pin for orientation (left to right/right to left {upside down}) control, 0 for no orientation control
@@ -125,7 +120,7 @@ struct Settings_t {
 	byte nOrientationInverts;	// invert orientation in relation to control
 	uint8_t nFullTimeNav;		// full time nav on tips
 
-	// messages
+								// messages
 	byte nNumMessages;			// Number of active messages
 	char sMessage[9][33];		// Message array
 	char sFormat[9][13];		// Message format string array
@@ -155,7 +150,7 @@ void LoadDefaults() {
 	Settings.nFontBrightness = 8;	// 0-9
 	Settings.nMinFrameRate = 90;
 	Settings.nMaxFrameRate = 120;
-	
+
 	Settings.nInterCharFrameGap = 6;
 	Settings.nFrameRatePin = 4;
 	Settings.nMessageSelectPin = 2;
@@ -165,29 +160,29 @@ void LoadDefaults() {
 	Settings.nFullTimeNav = true;
 
 	Settings.nNumMessages = 5;
-	strcpy( Settings.sMessage[0], "");
-	strcpy( Settings.sMessage[1], "");
-	strcpy( Settings.sMessage[2], "");
-	strcpy( Settings.sMessage[3], "");
-	strcpy( Settings.sMessage[4], "");
-	strcpy( Settings.sMessage[5], "");
-	strcpy( Settings.sMessage[6], "");
-	strcpy( Settings.sMessage[7], "fireFLY POV  ");
-	strcpy( Settings.sMessage[8], "");
+	strcpy(Settings.sMessage[0], "");
+	strcpy(Settings.sMessage[1], "");
+	strcpy(Settings.sMessage[2], "");
+	strcpy(Settings.sMessage[3], "");
+	strcpy(Settings.sMessage[4], "");
+	strcpy(Settings.sMessage[5], "");
+	strcpy(Settings.sMessage[6], "");
+	strcpy(Settings.sMessage[7], "fireFLY POV  ");
+	strcpy(Settings.sMessage[8], "");
 
-	strcpy( Settings.sFormat[0], "\\e3\\p1");
-	strcpy( Settings.sFormat[1], "\\e3\\p2");
-	strcpy( Settings.sFormat[2], "\\e3\\p3");
-	strcpy( Settings.sFormat[3], "\\e3\\p4");
-	strcpy( Settings.sFormat[4], "\\e3\\p5");
-	strcpy( Settings.sFormat[5], "\\e2\\p1");
-	strcpy( Settings.sFormat[6], "\\e2\\p2");
-	strcpy( Settings.sFormat[7], "\\e2\\p3");
-	strcpy( Settings.sFormat[8], "\\e1");
+	strcpy(Settings.sFormat[0], "\\e3\\p1");
+	strcpy(Settings.sFormat[1], "\\e3\\p2");
+	strcpy(Settings.sFormat[2], "\\e3\\p3");
+	strcpy(Settings.sFormat[3], "\\e3\\p4");
+	strcpy(Settings.sFormat[4], "\\e3\\p5");
+	strcpy(Settings.sFormat[5], "\\e2\\p1");
+	strcpy(Settings.sFormat[6], "\\e2\\p2");
+	strcpy(Settings.sFormat[7], "\\e2\\p3");
+	strcpy(Settings.sFormat[8], "\\e1");
 
 	// global pre-calc vars
-	SetBackBrightness( Settings.nBackBrightness);
-	SetFontBrightness( Settings.nFontBrightness);
+	SetBackBrightness(Settings.nBackBrightness);
+	SetFontBrightness(Settings.nFontBrightness);
 
 	Calibrations.nFrameRate_LowVal = 1000;
 	Calibrations.nFrameRate_HighVal = 2000;
@@ -206,7 +201,7 @@ void LoadDefaults() {
 // LoadSettings
 //
 void LoadSettings() {
-	
+
 	byte nCurrentSettingsVersion;
 	int SettingsBlockStart = sizeof(SettingsVersion);
 	int CalibrationsBlockStart = sizeof(SettingsVersion) + sizeof(Settings);
@@ -216,7 +211,7 @@ void LoadSettings() {
 #else
 	// first load the settings version and check for mis-match
 	eeprom_read_block((void*)&nCurrentSettingsVersion, (void*)0, sizeof(nCurrentSettingsVersion));
-	if( nCurrentSettingsVersion != SettingsVersion) {
+	if (nCurrentSettingsVersion != SettingsVersion) {
 		LoadDefaults();
 	}
 	else {
@@ -228,8 +223,8 @@ void LoadSettings() {
 #endif
 
 	// global pre-calc vars
-	SetBackBrightness( Settings.nBackBrightness);
-	SetFontBrightness( Settings.nFontBrightness);
+	SetBackBrightness(Settings.nBackBrightness);
+	SetFontBrightness(Settings.nFontBrightness);
 }
 
 // SaveSettings
@@ -258,33 +253,33 @@ void SaveCalibrations() {
 void InitStrip() {
 
 	// setup strip
-	switch ( Settings.nStripType) {
-		case aWS2812B:
-			FastLED.addLeds<WS2812B, DATA_PIN, GRB>(g_cPixels, g_nStripPixels).setCorrection(TypicalLEDStrip);
-			break;
+	switch (Settings.nStripType) {
+	case aWS2812B:
+		FastLED.addLeds<WS2812B, DATA_PIN, GRB>(g_cPixels, g_nStripPixels).setCorrection(TypicalLEDStrip);
+		break;
 
-		case aLPD8806:
-			FastLED.addLeds<LPD8806, DATA_PIN, CLOCK_PIN, RGB>(g_cPixels, g_nStripPixels).setCorrection(TypicalLEDStrip);
-			break;
+	case aLPD8806:
+		FastLED.addLeds<LPD8806, DATA_PIN, CLOCK_PIN, RGB>(g_cPixels, g_nStripPixels).setCorrection(TypicalLEDStrip);
+		break;
 	}
 	FastLED.setBrightness(255);
 }
 
 // SetPixel()
 //	
-void SetPixel( int n, CRGB c) {
-	for( unsigned int i = 0; i < Settings.nPixelsMulti; i++) {
+void SetPixel(int n, CRGB c) {
+	for (unsigned int i = 0; i < Settings.nPixelsMulti; i++) {
 		g_cPixels[n * Settings.nPixelsMulti + i] = c;
 	}
 }
 
-void SetFontBrightness( int nBrightness) {
-	g_cFontRender.r = (uint8_t) map(nBrightness, 0, 9, 0, 255);
+void SetFontBrightness(int nBrightness) {
+	g_cFontRender.r = (uint8_t)map(nBrightness, 0, 9, 0, 255);
 	g_cFontRender.g = g_cFontRender.r;
 	g_cFontRender.b = g_cFontRender.r;
 }
-void SetBackBrightness( int nBrightness) {
-	g_nBackBright = (uint8_t) map(nBrightness, 0, 9, 0, 255);
+void SetBackBrightness(int nBrightness) {
+	g_nBackBright = (uint8_t)map(nBrightness, 0, 9, 0, 255);
 }
 
 
@@ -300,14 +295,14 @@ void RenderFrame() {
 
 	static int nFrameDelay = 0;			// Skip n frames, this creates inter charactor spacing
 	static int nFrameAnimator = 0;		// This just loops from 0-359 - used for animation
-	
+
 	bool bInhibit = 0;
 	uint32_t buffer = 0;
 	uint16_t i = 0;
 	uint16_t iprime = 0;
 
-	if ( bInhibit) {
-		if( analogRead( 2) > 50) {
+	if (bInhibit) {
+		if (analogRead(2) > 50) {
 			bInhibit = false;
 		}
 		else {
@@ -324,7 +319,7 @@ void RenderFrame() {
 		break;
 	case 3:
 		// call this effect once to render a full frame of effect
-		Effect_PlasmaThrust( g_nBackBright);
+		Effect_PlasmaThrust(g_nBackBright);
 		break;
 
 	default:
@@ -402,7 +397,7 @@ void RenderFrame() {
 				// set index and pointer for next call to RenderFrame
 				g_nCurrentChar = constrain(Settings.sMessage[g_nCurrentMessage][g_nCharNum] - g_nASCIIStart, 0, g_nASCIIEnd - g_nASCIIStart);
 				g_nColumnPtr = CharacterMap[g_nCurrentChar];
-				g_nCharWidth = (uint8_t) pgm_read_dword(g_nColumnPtr);
+				g_nCharWidth = (uint8_t)pgm_read_dword(g_nColumnPtr);
 				// set to end of current char
 				g_nColumnNum = g_nCharWidth;
 			}
@@ -436,7 +431,7 @@ void RenderFrame() {
 				// set index and pointer for next call to RenderFrame
 				g_nCurrentChar = constrain(Settings.sMessage[g_nCurrentMessage][g_nCharNum] - g_nASCIIStart, 0, g_nASCIIEnd - g_nASCIIStart);
 				g_nColumnPtr = CharacterMap[g_nCurrentChar];
-				g_nCharWidth = (uint8_t) pgm_read_dword(g_nColumnPtr);
+				g_nCharWidth = (uint8_t)pgm_read_dword(g_nColumnPtr);
 				// set to beginning of current char
 				g_nColumnNum = 1; // 0 is the char width
 			}
@@ -474,8 +469,8 @@ void Effect_Graphic(int nGraphicID, int nImageColumn) {
 //		int nDegrees,		- 0 - 255 - call with incrementing number to animate
 //		int coef			- brightness
 //
-inline CRGB Effect_Rainbow( int i, int nDegrees, int bright) {
-	return ColorFromPalette( RainbowColors_p, i * (256 / g_nFontPixels) + nDegrees, bright);
+inline CRGB Effect_Rainbow(int i, int nDegrees, int bright) {
+	return ColorFromPalette(RainbowColors_p, i * (256 / g_nFontPixels) + nDegrees, bright);
 }
 
 
@@ -484,8 +479,8 @@ inline CRGB Effect_Rainbow( int i, int nDegrees, int bright) {
 //		int i				- pixel num
 //		int bright			- brightness
 //
-inline CRGB Effect_Navigation( int i, uint8_t bright) {
-	return (i < (g_nFontPixels / 2)) ? (CRGB){bright,0,0} : (CRGB){0,bright,0};
+inline CRGB Effect_Navigation(int i, uint8_t bright) {
+	return (i < (g_nFontPixels / 2)) ? (CRGB) { bright, 0, 0 } : (CRGB) { 0, bright, 0 };
 	//return (i < (g_nFontPixels / 2)) ? CRGB::Red : CRGB::Green;
 }
 
@@ -501,19 +496,19 @@ void Effect_PlasmaThrust(int bright)
 	int nCoolingPrime = (COOLING * 10) / nEffectWidth;
 	CRGBPalette16 cPallette;
 
-	switch( g_nEffectPalleteID) {
-		case 1: cPallette = HeatColors_p; break;
-		case 2: cPallette = CRGBPalette16(CRGB::Black, CRGB::Green, CRGB::Blue, CRGB::Red); break;
-		case 3: cPallette = CRGBPalette16(CRGB::Black, CRGB::Red, CRGB::Green, CRGB::Blue); break; // miako
-		default:
-		case 4: cPallette = CRGBPalette16(CRGB::Black, CRGB::Gold, CRGB::Red, CRGB::DarkBlue); break;  // paul
-		case 5: cPallette = CRGBPalette16(CRGB::Black, CRGB::YellowGreen, CRGB::Blue, CRGB::Blue); break;  // miako
-		case 6: cPallette = CRGBPalette16(CRGB::Black, CRGB::Blue, CRGB::Aqua, CRGB::Orange); break;
+	switch (g_nEffectPalleteID) {
+	case 1: cPallette = HeatColors_p; break;
+	case 2: cPallette = CRGBPalette16(CRGB::Black, CRGB::Green, CRGB::Blue, CRGB::Red); break;
+	case 3: cPallette = CRGBPalette16(CRGB::Black, CRGB::Red, CRGB::Green, CRGB::Blue); break; // miako
+	default:
+	case 4: cPallette = CRGBPalette16(CRGB::Black, CRGB::Gold, CRGB::Red, CRGB::DarkBlue); break;  // paul
+	case 5: cPallette = CRGBPalette16(CRGB::Black, CRGB::YellowGreen, CRGB::Blue, CRGB::Blue); break;  // miako
+	case 6: cPallette = CRGBPalette16(CRGB::Black, CRGB::Blue, CRGB::Aqua, CRGB::Orange); break;
 	}
 
 	// Cool down every cell a little
 	for (int i = 0; i < nEffectWidth; i++) {
-		heat[i] = qsub8( heat[i], random8(nCoolingPrime) + 2);
+		heat[i] = qsub8(heat[i], random8(nCoolingPrime) + 2);
 		//heat[i] = qsub8(heat[i], random8( COOLING) + 2);
 	}
 
@@ -523,16 +518,16 @@ void Effect_PlasmaThrust(int bright)
 
 	// Heat from each cell drifts 'up' and diffuses a little
 	for (int k = nEffectWidth - 1; k >= 2; k--) {
-		heat[k] = ( heat[k - 1] + heat[k - 2] + heat[k - 2]) / 3;
+		heat[k] = (heat[k - 1] + heat[k - 2] + heat[k - 2]) / 3;
 	}
 
 	// Randomly ignite new 'sparks' of heat near the bottom
 	if (random8() < SPARKING) {
 
 		// doing this so it has a assymetrical effect across the two sides
-		for( int j = random8( 2); j <= 3; j += 2) {
-			heat[j] = qadd8( heat[j],  random8( 128, 255));
-			heat[j+1] = qadd8(heat[j+1], random8(128, 255));
+		for (int j = random8(2); j <= 3; j += 2) {
+			heat[j] = qadd8(heat[j], random8(128, 255));
+			heat[j + 1] = qadd8(heat[j + 1], random8(128, 255));
 		}
 	}
 
@@ -540,20 +535,20 @@ void Effect_PlasmaThrust(int bright)
 	//SetPixel(nPixel, ColorFromPalette(HeatColors_p, heat[nPixel]));
 
 	for (int j = 0; j < nEffectWidth / 2; j++) {
-		g_cPixels[nEffectWidth / 2 + j] = ColorFromPalette( cPallette, scale8( heat[j * 2], 240), g_nBackBright);
-		g_cPixels[nEffectWidth / 2 - j - 1] = ColorFromPalette( cPallette, scale8( heat[(j * 2) + 1], 240), g_nBackBright);
+		g_cPixels[nEffectWidth / 2 + j] = ColorFromPalette(cPallette, scale8(heat[j * 2], 240), g_nBackBright);
+		g_cPixels[nEffectWidth / 2 - j - 1] = ColorFromPalette(cPallette, scale8(heat[(j * 2) + 1], 240), g_nBackBright);
 		//leds[NUM_LEDS / 2 + j] = HeatColor(heat[j*2]);
 		//leds[NUM_LEDS / 2 - j - 1] = HeatColor(heat[(j*2)+1]);
 	}
 	/*
 	if (g_nFrameRate > (unsigned int)((float)Settings.nMaxFrameRate * SPARKING_THRESH)) {
 	// Glitter sparkles
-		for (int j = 0; j < nEffectWidth; j++) {
-			if (random8() < 7 &&				// Master attenuator
-				random8() < SPARKING) 			// SPARKING attenuator
-				//g_cPixels[j] = ColorFromPalette(cPallette, 255, g_nBackBright);
-				g_cPixels[j] = CRGB::White;
-		}
+	for (int j = 0; j < nEffectWidth; j++) {
+	if (random8() < 7 &&				// Master attenuator
+	random8() < SPARKING) 			// SPARKING attenuator
+	//g_cPixels[j] = ColorFromPalette(cPallette, 255, g_nBackBright);
+	g_cPixels[j] = CRGB::White;
+	}
 	}
 	*/
 }
@@ -564,15 +559,15 @@ void Effect_PlasmaThrust(int bright)
 void setup() {
 
 	// open serial ports
-	Serial.begin( USB_BAUD_RATE);
+	Serial.begin(USB_BAUD_RATE);
 
 	//load settings
 	LoadSettings();
 
 	// setup pins
-	if( Settings.nFrameRatePin > 0) pinMode(Settings.nFrameRatePin, INPUT);
-	if( Settings.nMessageSelectPin > 0) pinMode(Settings.nMessageSelectPin, INPUT);
-	if( Settings.nOrientationPin > 0) pinMode(Settings.nOrientationPin, INPUT);
+	if (Settings.nFrameRatePin > 0) pinMode(Settings.nFrameRatePin, INPUT);
+	if (Settings.nMessageSelectPin > 0) pinMode(Settings.nMessageSelectPin, INPUT);
+	if (Settings.nOrientationPin > 0) pinMode(Settings.nOrientationPin, INPUT);
 
 	// copy bitmap to ram
 	oBitmapBuffer = (_pixelrgb*)malloc(sizeof(oBitmap));
@@ -592,52 +587,46 @@ void setup() {
 
 	//show masthead and prompt
 	Serial.println();
-	Serial.print( F("Welcome to fireFly POV - By Buck McGibbony and Paul Drucker - Version ")); Serial.println( VERSION);
+	Serial.print(F("Welcome to fireFly POV - By Buck McGibbony and Paul Drucker - Version ")); Serial.println(VERSION);
 	Serial.println();
-	Serial.print( F("fireFly POV>"));
+	Serial.print(F("fireFly POV>"));
 }
 
 
 // loop
 //
 void loop() {
-
-	// this being the highest frequency loop available we will drive our various tasks from here
-	// each task has its own frame rate.
+	//static unsigned long g_ulNextPWMSampleTime = 0;
+	//static unsigned long g_ulNextFrameTime = 0;
+	//static unsigned long g_nLastPWMFrameRateValue = 0;
 
 	// record entrance time
-	unsigned long ulTimeNow = millis();
-
+	//unsigned long ulTimeNow = millis();
 
 	// FrameRate heartbeat
-	if (ulTimeNow >= g_ulNextFrameTime) {
+	//if (ulTimeNow >= g_ulNextFrameTime) {
+	EVERY_N_MILLISECONDS( 1000 / g_nFrameRate) {
 		// calc next frame (do this first so it is lined up better)
-		g_ulNextFrameTime = ulTimeNow + (1000 / g_nFrameRate);
+		//g_ulNextFrameTime = ulTimeNow + (1000 / g_nFrameRate);
 
-		// we blit the frame buffer out to the strip first so that the appearance of changes to the strip are consistant thru time
-		// this way the time to process the next frame is not seen since it happens between the blit and the next frame
 		ShowStrip();
 		FastLED.countFPS();
-		//digitalWrite(LED_BUILTIN, 0);
 		RenderFrame();
-
-		// detect time frame overflow
-		//if (millis() >= g_ulNextFrameTime) {
-		//	digitalWrite(LED_BUILTIN, 1);
-			//digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));
-		//}
 	}
-	EVERY_N_SECONDS(5) { Serial.println(FastLED.getFPS()/2); }
 
 	// PWMSampleRate heartbeat
 	// wait for scheduled check and its a frame delay, has less impact on speed that way
-	if ( (ulTimeNow >= g_ulNextPWMSampleTime)) {
-		g_ulNextPWMSampleTime = ulTimeNow + ( 1000 / g_nSampleRate);
+		//if ((ulTimeNow >= g_ulNextPWMSampleTime)) {
+	EVERY_N_MILLISECONDS( 1000 / g_nSampleRate) {
+		//g_ulNextPWMSampleTime = ulTimeNow + (1000 / g_nSampleRate);
 		UpdateInputs();
 	}
-	
+
+	// report actual frame rate
+	EVERY_N_SECONDS( 5) { Serial.println(FastLED.getFPS() / 2); }
+
 	//service comm port
-	while( Serial.available()) SerialEvent();
+	while (Serial.available()) SerialEvent();
 }
 
 
@@ -656,35 +645,35 @@ void ResetMessage() {
 	g_nColumnNum = 1;
 
 	// set format defaults
-	SetBackBrightness( Settings.nBackBrightness);
-	SetFontBrightness( Settings.nFontBrightness);
+	SetBackBrightness(Settings.nBackBrightness);
+	SetFontBrightness(Settings.nFontBrightness);
 	FastLED.setBrightness(255);
 	g_nEffectID = 0;
 	g_nEffectPalleteID = 0;
 	g_nAnimFrames = 256;
 
 	// read format string
-	n = strlen( Settings.sFormat[g_nCurrentMessage]);
-	for( nCharNum = 0; (size_t)nCharNum < strlen( Settings.sFormat[g_nCurrentMessage]); nCharNum++) {
-		if( Settings.sFormat[g_nCurrentMessage][nCharNum] == '\\') {
-			char nChar = Settings.sFormat[g_nCurrentMessage][nCharNum+1];
+	n = strlen(Settings.sFormat[g_nCurrentMessage]);
+	for (nCharNum = 0; (size_t)nCharNum < strlen(Settings.sFormat[g_nCurrentMessage]); nCharNum++) {
+		if (Settings.sFormat[g_nCurrentMessage][nCharNum] == '\\') {
+			char nChar = Settings.sFormat[g_nCurrentMessage][nCharNum + 1];
 			// \Bn
-			if( nChar == 'b' || nChar == 'B') {
-				n = constrain( Settings.sFormat[g_nCurrentMessage][nCharNum+2] - '0',0,9);
-				SetFontBrightness( n);
+			if (nChar == 'b' || nChar == 'B') {
+				n = constrain(Settings.sFormat[g_nCurrentMessage][nCharNum + 2] - '0', 0, 9);
+				SetFontBrightness(n);
 				nCharNum += 2;
 			}
 
 			// \Nn
-			else if( nChar == 'n' || nChar == 'N') {
-				n = constrain( Settings.sFormat[g_nCurrentMessage][nCharNum+2] - '0',0,9);
-				SetBackBrightness( n);
+			else if (nChar == 'n' || nChar == 'N') {
+				n = constrain(Settings.sFormat[g_nCurrentMessage][nCharNum + 2] - '0', 0, 9);
+				SetBackBrightness(n);
 				nCharNum += 2;
 			}
 
 			// \En
-			else if( nChar == 'e' || nChar == 'E') {
-				n = constrain( Settings.sFormat[g_nCurrentMessage][nCharNum+2] - '0',0,9);
+			else if (nChar == 'e' || nChar == 'E') {
+				n = constrain(Settings.sFormat[g_nCurrentMessage][nCharNum + 2] - '0', 0, 9);
 				g_nEffectID = n;
 				nCharNum += 2;
 			}
@@ -701,9 +690,9 @@ void ResetMessage() {
 				n = constrain(Settings.sFormat[g_nCurrentMessage][nCharNum + 2] - '0', 0, 9);
 				// set graphic image number (coded as a negative g_nEffectID number)
 				g_nEffectID = -1 * n;
-				switch( abs(g_nEffectID)) {
-					case 1:
-						g_nAnimFrames = oBitmap_width + Settings.nInterCharFrameGap * 6;
+				switch (abs(g_nEffectID)) {
+				case 1:
+					g_nAnimFrames = oBitmap_width + Settings.nInterCharFrameGap * 6;
 				}
 				nCharNum += 2;
 			}
@@ -720,391 +709,393 @@ void SerialEvent() {
 
 	char sInputChar = 0;   // for incoming serial data
 
-	// read the incoming char
-	//  sBuffer[Serial.readBytes(sBuffer, Serial.available())] = 0;
+						   // read the incoming char
+						   //  sBuffer[Serial.readBytes(sBuffer, Serial.available())] = 0;
 	sInputChar = Serial.read();
 
-	switch( sInputChar) {
-		case '\r':  // Carriage return /Enter 0x0d
-			if( g_nCommandLength > 0) {
-				Serial.println();
-				ProcessCommand( g_sCommandBuffer);
-				Serial.flush();
-				g_nCommandLength = 0;
-			}
-
-			//show prompt
+	switch (sInputChar) {
+	case '\r':  // Carriage return /Enter 0x0d
+		if (g_nCommandLength > 0) {
 			Serial.println();
-			Serial.print( F("fireFly POV>"));
-			break;
+			ProcessCommand(g_sCommandBuffer);
+			Serial.flush();
+			g_nCommandLength = 0;
+		}
 
-		case 127: // Backspace
-			if( g_nCommandLength > 0) {
-				Serial.print( sInputChar);
-				//Serial.print( " "); Serial.print( sInputChar);
-				g_sCommandBuffer[--g_nCommandLength] = '\0';
-			}
-			break;
+		//show prompt
+		Serial.println();
+		Serial.print(F("fireFly POV>"));
+		break;
 
-		default: 
-			// if sInputChar is a visible (non-escape code) character then we append it to our command line buffer
-			if( (int) sInputChar > 31 && (int) sInputChar < 127) {
-				if( g_nCommandLength< sizeof( g_sCommandBuffer)) {
-					// echo char
-					Serial.print( sInputChar);
-					g_sCommandBuffer[g_nCommandLength] = sInputChar;
-					g_sCommandBuffer[++g_nCommandLength] = '\0';
-				}
+	case 127: // Backspace
+		if (g_nCommandLength > 0) {
+			Serial.print(sInputChar);
+			//Serial.print( " "); Serial.print( sInputChar);
+			g_sCommandBuffer[--g_nCommandLength] = '\0';
+		}
+		break;
+
+	default:
+		// if sInputChar is a visible (non-escape code) character then we append it to our command line buffer
+		if ((int)sInputChar > 31 && (int)sInputChar < 127) {
+			if (g_nCommandLength< sizeof(g_sCommandBuffer)) {
+				// echo char
+				Serial.print(sInputChar);
+				g_sCommandBuffer[g_nCommandLength] = sInputChar;
+				g_sCommandBuffer[++g_nCommandLength] = '\0';
 			}
-			break;
+		}
+		break;
 	}
 }
 
 // ProcessCommand
 //
-void ProcessCommand( char *sCommand) {
+void ProcessCommand(char *sCommand) {
 
 	int n;
 	int n1;
 
-	switch( sCommand[0]) {
-		case 'A':
-		case 'a':
-			// message command
-			n = constrain( sCommand[1] - '1', 0, 8);  // convert the ascii number to 0-4 for using as index
-			if( sCommand[2] == '=') {
-				// set message format n to abc
-				if( strlen( &sCommand[3]) > sizeof( Settings.sFormat[n]) - 1) {
-					Serial.print( F("Format too long, max length is ")); Serial.print( sizeof( Settings.sFormat[n]) - 1); Serial.println( F(" chars."));
-				}
-				else {
-					strcpy( Settings.sFormat[n], &sCommand[3]);
-					Serial.print( "A"); Serial.print( n+1); Serial.print( "=\""); Serial.print( Settings.sFormat[n]); Serial.println( "\""); 
-				}
+	switch (sCommand[0]) {
+	case 'A':
+	case 'a':
+		// message command
+		n = constrain(sCommand[1] - '1', 0, 8);  // convert the ascii number to 0-4 for using as index
+		if (sCommand[2] == '=') {
+			// set message format n to abc
+			if (strlen(&sCommand[3]) > sizeof(Settings.sFormat[n]) - 1) {
+				Serial.print(F("Format too long, max length is ")); Serial.print(sizeof(Settings.sFormat[n]) - 1); Serial.println(F(" chars."));
 			}
-			ResetMessage();
-			break;
-
-		case 'B':
-		case 'b':
-			// Set font brightness
-			n = constrain(sCommand[1] - '0',0,9);
-			Settings.nFontBrightness = n;
-			SetFontBrightness( Settings.nFontBrightness);
-
-			Serial.print( F("Font brightness set to ")); Serial.println( Settings.nFontBrightness); 
-			break;
-
-		case 'c':
-		case 'C':
-			CalibrateInputs();
-			break;
-
-		case 'd':
-		case 'D':
-			// Load Defaults
-			LoadDefaults();
-			Serial.println( F("Loaded default settings."));
-			ResetMessage();
-			break;
-
-		case 'f':
-		case 'F':
-			n = constrain(atoi( &sCommand[3]), 1, 420);
-			switch( sCommand[1]) {
-				case 'n':
-				case 'N':
-					Settings.nMinFrameRate = n;
-					Serial.print( F("Min frame rate set to ")); Serial.println( n); 
-					break;
-
-				case 'x':
-				case 'X':
-					Settings.nMaxFrameRate = n;
-					Serial.print( F("Max frame rate set to ")); Serial.println( n); 
-					g_nFrameRate = Settings.nMaxFrameRate;
-					break;
-			}
-			// make sure frame rate is inside new constraints
-			g_nFrameRate = constrain( g_nFrameRate, Settings.nMinFrameRate, Settings.nMaxFrameRate);
-			break;
-
-		case 'G':
-		case 'g':
-			// Set character frame gap (space between characters)
-			n = constrain(sCommand[1] - '0',1,9);
-			Settings.nInterCharFrameGap = n;
-			Serial.print( F("Character frame gap set to ")); Serial.println( n); 
-			break;
-
-		case 'i':
-		case 'I':
-			// Set orientation inverts
-			n = constrain(sCommand[1] - '0',0,1);
-			n1 = constrain(sCommand[2] - '0',0,1);
-			Settings.nOrientationInverts = n * 2 + n1;
-			g_nLastPWMOrientationValue = 0;  // force recalc of orientation variable
-			Serial.print( F("Inverts set to: ")); Serial.print( n); Serial.println( n1); 
-			ResetMessage();
-			break;
-
-		case 'l':
-		case 'L':
-			Serial.println( F("Current Settings:"));
-			Serial.println();
-			Serial.print( F("Font Brightness = ")); Serial.println( Settings.nFontBrightness);
-			Serial.print( F("Back Brightness = ")); Serial.println( Settings.nBackBrightness);
-			Serial.print( F("Min Frame Rate  = ")); Serial.println( Settings.nMinFrameRate);
-			Serial.print( F("Max Frame Rate  = ")); Serial.println( Settings.nMaxFrameRate);
-			Serial.print( F("Character Gap   = ")); Serial.println( Settings.nInterCharFrameGap);
-			Serial.println();
-			
-			Serial.print( F("Frame Rate Pin       = ")); 
-			if( Settings.nFrameRatePin > 0) {
-				Serial.print( F("D"));
-				Serial.print( Settings.nFrameRatePin);
-				Serial.print( F(" [")); Serial.print( Calibrations.nFrameRate_LowVal); Serial.print( "-"); Serial.print( Calibrations.nFrameRate_HighVal); Serial.println( "]"); }
 			else {
-				Serial.println( F("disabled"));
+				strcpy(Settings.sFormat[n], &sCommand[3]);
+				Serial.print("A"); Serial.print(n + 1); Serial.print("=\""); Serial.print(Settings.sFormat[n]); Serial.println("\"");
 			}
+		}
+		ResetMessage();
+		break;
 
-			Serial.print( F("Message Select Pin   = "));
-			if( Settings.nMessageSelectPin > 0) {
-				Serial.print( F("D"));
-				Serial.print( Settings.nMessageSelectPin);
+	case 'B':
+	case 'b':
+		// Set font brightness
+		n = constrain(sCommand[1] - '0', 0, 9);
+		Settings.nFontBrightness = n;
+		SetFontBrightness(Settings.nFontBrightness);
+
+		Serial.print(F("Font brightness set to ")); Serial.println(Settings.nFontBrightness);
+		break;
+
+	case 'c':
+	case 'C':
+		CalibrateInputs();
+		break;
+
+	case 'd':
+	case 'D':
+		// Load Defaults
+		LoadDefaults();
+		Serial.println(F("Loaded default settings."));
+		ResetMessage();
+		break;
+
+	case 'f':
+	case 'F':
+		n = constrain(atoi(&sCommand[3]), 1, 420);
+		switch (sCommand[1]) {
+		case 'n':
+		case 'N':
+			Settings.nMinFrameRate = n;
+			Serial.print(F("Min frame rate set to ")); Serial.println(n);
+			break;
+
+		case 'x':
+		case 'X':
+			Settings.nMaxFrameRate = n;
+			Serial.print(F("Max frame rate set to ")); Serial.println(n);
+			g_nFrameRate = Settings.nMaxFrameRate;
+			break;
+		}
+		// make sure frame rate is inside new constraints
+		g_nFrameRate = constrain(g_nFrameRate, Settings.nMinFrameRate, Settings.nMaxFrameRate);
+		break;
+
+	case 'G':
+	case 'g':
+		// Set character frame gap (space between characters)
+		n = constrain(sCommand[1] - '0', 1, 9);
+		Settings.nInterCharFrameGap = n;
+		Serial.print(F("Character frame gap set to ")); Serial.println(n);
+		break;
+
+	case 'i':
+	case 'I':
+		// Set orientation inverts
+		n = constrain(sCommand[1] - '0', 0, 1);
+		n1 = constrain(sCommand[2] - '0', 0, 1);
+		Settings.nOrientationInverts = n * 2 + n1;
+		g_nLastPWMOrientationValue = 0;  // force recalc of orientation variable
+		Serial.print(F("Inverts set to: ")); Serial.print(n); Serial.println(n1);
+		ResetMessage();
+		break;
+
+	case 'l':
+	case 'L':
+		Serial.println(F("Current Settings:"));
+		Serial.println();
+		Serial.print(F("Font Brightness = ")); Serial.println(Settings.nFontBrightness);
+		Serial.print(F("Back Brightness = ")); Serial.println(Settings.nBackBrightness);
+		Serial.print(F("Min Frame Rate  = ")); Serial.println(Settings.nMinFrameRate);
+		Serial.print(F("Max Frame Rate  = ")); Serial.println(Settings.nMaxFrameRate);
+		Serial.print(F("Character Gap   = ")); Serial.println(Settings.nInterCharFrameGap);
+		Serial.println();
+
+		Serial.print(F("Frame Rate Pin       = "));
+		if (Settings.nFrameRatePin > 0) {
+			Serial.print(F("D"));
+			Serial.print(Settings.nFrameRatePin);
+			Serial.print(F(" [")); Serial.print(Calibrations.nFrameRate_LowVal); Serial.print("-"); Serial.print(Calibrations.nFrameRate_HighVal); Serial.println("]");
+		}
+		else {
+			Serial.println(F("disabled"));
+		}
+
+		Serial.print(F("Message Select Pin   = "));
+		if (Settings.nMessageSelectPin > 0) {
+			Serial.print(F("D"));
+			Serial.print(Settings.nMessageSelectPin);
+			Serial.print(F(" [")); Serial.print(Calibrations.nMessageSelect_LowVal); Serial.print("-"); Serial.print(Calibrations.nMessageSelect_HighVal); Serial.println("]");
+		}
+		else {
+			if (Settings.nMessageSelectPin == 0) {
+				Serial.println(F("disabled"));
+			}
+			else {
+				Serial.print(F("A"));
+				Serial.print(abs(Settings.nMessageSelectPin));
 				Serial.print(F(" [")); Serial.print(Calibrations.nMessageSelect_LowVal); Serial.print("-"); Serial.print(Calibrations.nMessageSelect_HighVal); Serial.println("]");
 			}
-			else {
-				if (Settings.nMessageSelectPin == 0) {
-					Serial.println(F("disabled"));
-				}
-				else {
-					Serial.print(F("A"));
-					Serial.print(abs(Settings.nMessageSelectPin));
-					Serial.print(F(" [")); Serial.print(Calibrations.nMessageSelect_LowVal); Serial.print("-"); Serial.print(Calibrations.nMessageSelect_HighVal); Serial.println("]");
-				}
-			}
+		}
 
 
-			Serial.print( F("Orientation Pin      = "));
-			if( Settings.nOrientationPin > 0) {
-				Serial.print( F("D"));
-				Serial.print( Settings.nOrientationPin);
-				Serial.print( F(" [")); Serial.print( Calibrations.nOrientation_LowVal); Serial.print( "-"); Serial.print( Calibrations.nOrientation_HighVal); Serial.println( "]"); }
-			else {
-				Serial.println( F("disabled"));
-			}
-			
-			Serial.print( F("Render Inhibit       = A2")); Serial.println( " (ground = pause)");
-			Serial.print( F("Orientation Deadzone = ")); Serial.print( Settings.nOrientationDeadZone); Serial.println( "%");
-			
-			n = (Settings.nOrientationInverts & 2) >> 1;
-			n1 = Settings.nOrientationInverts & 1;
-			Serial.print( F("Orientation Inverts  = ")); Serial.print( n); Serial.print( n1); Serial.print( " (Current Orientation: "); Serial.print( g_nOrientation); Serial.println( ")");
+		Serial.print(F("Orientation Pin      = "));
+		if (Settings.nOrientationPin > 0) {
+			Serial.print(F("D"));
+			Serial.print(Settings.nOrientationPin);
+			Serial.print(F(" [")); Serial.print(Calibrations.nOrientation_LowVal); Serial.print("-"); Serial.print(Calibrations.nOrientation_HighVal); Serial.println("]");
+		}
+		else {
+			Serial.println(F("disabled"));
+		}
 
-			Serial.print( F("Strip Type           = ")); Serial.print( Settings.nStripType); 
-			switch( Settings.nStripType) {
-				case aWS2812B:
-					Serial.println( F(" (WS2812B)"));
-					break;
-				case aLPD8806:
-					Serial.println( F(" (LPD8806)"));
-					break;
-			}
-			
-			Serial.print( F("Pixel Multiplier     = ")); Serial.println( Settings.nPixelsMulti); 
-			Serial.print( F("Full Time Nav        = ")); Serial.println(Settings.nFullTimeNav);
+		Serial.print(F("Render Inhibit       = A2")); Serial.println(" (ground = pause)");
+		Serial.print(F("Orientation Deadzone = ")); Serial.print(Settings.nOrientationDeadZone); Serial.println("%");
+
+		n = (Settings.nOrientationInverts & 2) >> 1;
+		n1 = Settings.nOrientationInverts & 1;
+		Serial.print(F("Orientation Inverts  = ")); Serial.print(n); Serial.print(n1); Serial.print(" (Current Orientation: "); Serial.print(g_nOrientation); Serial.println(")");
+
+		Serial.print(F("Strip Type           = ")); Serial.print(Settings.nStripType);
+		switch (Settings.nStripType) {
+		case aWS2812B:
+			Serial.println(F(" (WS2812B)"));
+			break;
+		case aLPD8806:
+			Serial.println(F(" (LPD8806)"));
+			break;
+		}
+
+		Serial.print(F("Pixel Multiplier     = ")); Serial.println(Settings.nPixelsMulti);
+		Serial.print(F("Full Time Nav        = ")); Serial.println(Settings.nFullTimeNav);
+
+		Serial.println();
+		Serial.print(F("Active Messages = ")); Serial.println(Settings.nNumMessages);
+		for (int i = 0; i < Settings.nNumMessages; i++) {
+			if (i == g_nCurrentMessage) Serial.print(F("*M")); else Serial.print(" M");
+			Serial.print(i + 1); Serial.print("=\""); Serial.print(Settings.sMessage[i]); Serial.print("\"");
+
+			int iMax = sizeof(Settings.sMessage[i]) - strlen(Settings.sMessage[i]);
+			for (int i1 = 0; i1<iMax; i1++) Serial.print(" ");
+			Serial.print(F(" >> ")); Serial.print(Settings.sFormat[i]);
 
 			Serial.println();
-			Serial.print( F("Active Messages = ")); Serial.println( Settings.nNumMessages);
-			for( int i = 0; i < Settings.nNumMessages; i++) {
-				if( i == g_nCurrentMessage) Serial.print( F("*M")); else Serial.print( " M");
-				Serial.print( i+1); Serial.print( "=\""); Serial.print( Settings.sMessage[i]); Serial.print( "\"");
+		}
+		//Serial.println();
+		Serial.print(F("Current Frame Rate: ")); Serial.print(g_nFrameRate); Serial.println(F(" fps"));
+		//Serial.print(F("S ")); Serial.println(SPARKING);
+		//Serial.print(F("C ")); Serial.println(COOLING);
+		break;
 
-				int iMax=sizeof( Settings.sMessage[i])-strlen(Settings.sMessage[i]);
-				for(int i1=0; i1<iMax; i1++) Serial.print( " ");
-				Serial.print( F(" >> ")); Serial.print( Settings.sFormat[i]); 
-
-				Serial.println();
-			}
-			//Serial.println();
-			Serial.print( F("Current Frame Rate: ")); Serial.print( g_nFrameRate); Serial.println( F(" fps"));
-			//Serial.print(F("S ")); Serial.println(SPARKING);
-			//Serial.print(F("C ")); Serial.println(COOLING);
-			break;
-
-		case 'M':
-		case 'm':
-			if( sCommand[1] == 'A' || sCommand[1] == 'a') {
-				// set message actives count
-				Settings.nNumMessages = constrain( sCommand[3] - '0', 1, 5);
-				Serial.print( F("Active messages set to ")); Serial.println( Settings.nNumMessages);
-			}
-			else {
-				// message command
-				n = constrain( sCommand[1] - '1', 0, 4);  // convert the ascii number to 0-4 for using as index
-				// are we setting a message or selecting?  look for that '=' sign at position 3
-				if( sCommand[2] == '=') {
-					// set message n to abc
-					if(strlen(&sCommand[3]) > sizeof( Settings.sMessage[n]) - 1) {
-						Serial.print( F("Message too long, max length is ")); Serial.print( sizeof( Settings.sMessage[n]) - 1); Serial.println( F(" chars."));
-					}
-					else {
-						strcpy( Settings.sMessage[n], &sCommand[3]);
-						Serial.print( "M"); Serial.print( n+1); Serial.print( "=\""); Serial.print( Settings.sMessage[n]); Serial.println( "\""); 
-					}
+	case 'M':
+	case 'm':
+		if (sCommand[1] == 'A' || sCommand[1] == 'a') {
+			// set message actives count
+			Settings.nNumMessages = constrain(sCommand[3] - '0', 1, 5);
+			Serial.print(F("Active messages set to ")); Serial.println(Settings.nNumMessages);
+		}
+		else {
+			// message command
+			n = constrain(sCommand[1] - '1', 0, 4);  // convert the ascii number to 0-4 for using as index
+													 // are we setting a message or selecting?  look for that '=' sign at position 3
+			if (sCommand[2] == '=') {
+				// set message n to abc
+				if (strlen(&sCommand[3]) > sizeof(Settings.sMessage[n]) - 1) {
+					Serial.print(F("Message too long, max length is ")); Serial.print(sizeof(Settings.sMessage[n]) - 1); Serial.println(F(" chars."));
 				}
 				else {
-					// selecting message n
-					g_nCurrentMessage = n;
-					Serial.print( F("Message ")); Serial.print( n+1); Serial.println( F(" selected."));
+					strcpy(Settings.sMessage[n], &sCommand[3]);
+					Serial.print("M"); Serial.print(n + 1); Serial.print("=\""); Serial.print(Settings.sMessage[n]); Serial.println("\"");
 				}
-			}
-			ResetMessage();
-			break;
-
-		case 'N':
-		case 'n':
-			// Set Nav brightness
-			Settings.nBackBrightness = constrain(sCommand[1] - '0',0,9);
-			SetBackBrightness( Settings.nBackBrightness);
-			Serial.print( F("BackBrightness set to ")); Serial.println( Settings.nBackBrightness); 
-			break;
-
-		case 'p':
-		case 'P':
-			n = constrain(atoi( &sCommand[3]), -15, 13);
-			if( n == 1) {
-				Serial.println( F("pin 1 used by SPI."));
 			}
 			else {
-				switch( sCommand[1]) {
-					case 'f':
-					case 'F':
-						Settings.nFrameRatePin = n;
-						Serial.print( F("FrameRate Pin set to ")); Serial.println( n); 
-						if( Settings.nFrameRatePin > 0) pinMode(Settings.nFrameRatePin, INPUT);
-						break;
-					case 'm':
-					case 'M':
-						Settings.nMessageSelectPin = n;
-						Serial.print( F("MessageSelect Pin set to ")); Serial.println( n); 
-						if( Settings.nMessageSelectPin > 0) {
-							pinMode(Settings.nMessageSelectPin, INPUT);
-							Calibrations.nMessageSelect_LowVal = 1000;
-							Calibrations.nMessageSelect_HighVal = 2000;
-						}
-						else {
-							Calibrations.nMessageSelect_LowVal = 0;
-							Calibrations.nMessageSelect_HighVal = 1024;
-						}
-						SaveCalibrations();
-						break;
-					case 'o':
-					case 'O':
-						Settings.nOrientationPin = n;
-						Serial.print( F("Orientation Pin set to ")); Serial.println( n);
-						if( Settings.nOrientationPin > 0) pinMode(Settings.nOrientationPin, INPUT);
-						break;
-				}
+				// selecting message n
+				g_nCurrentMessage = n;
+				Serial.print(F("Message ")); Serial.print(n + 1); Serial.println(F(" selected."));
 			}
-			break;
+		}
+		ResetMessage();
+		break;
 
-		case 'r':
-		case 'R':
-			LoadSettings();
-			Serial.println( F("Settings reloaded."));
-			ResetMessage();
-			break;
+	case 'N':
+	case 'n':
+		// Set Nav brightness
+		Settings.nBackBrightness = constrain(sCommand[1] - '0', 0, 9);
+		SetBackBrightness(Settings.nBackBrightness);
+		Serial.print(F("BackBrightness set to ")); Serial.println(Settings.nBackBrightness);
+		break;
 
+	case 'p':
+	case 'P':
+		n = constrain(atoi(&sCommand[3]), -15, 13);
+		if (n == 1) {
+			Serial.println(F("pin 1 used by SPI."));
+		}
+		else {
+			switch (sCommand[1]) {
+			case 'f':
+			case 'F':
+				Settings.nFrameRatePin = n;
+				Serial.print(F("FrameRate Pin set to ")); Serial.println(n);
+				if (Settings.nFrameRatePin > 0) pinMode(Settings.nFrameRatePin, INPUT);
+				break;
+			case 'm':
+			case 'M':
+				Settings.nMessageSelectPin = n;
+				Serial.print(F("MessageSelect Pin set to ")); Serial.println(n);
+				if (Settings.nMessageSelectPin > 0) {
+					pinMode(Settings.nMessageSelectPin, INPUT);
+					Calibrations.nMessageSelect_LowVal = 1000;
+					Calibrations.nMessageSelect_HighVal = 2000;
+				}
+				else {
+					Calibrations.nMessageSelect_LowVal = 0;
+					Calibrations.nMessageSelect_HighVal = 1024;
+				}
+				SaveCalibrations();
+				break;
+			case 'o':
+			case 'O':
+				Settings.nOrientationPin = n;
+				Serial.print(F("Orientation Pin set to ")); Serial.println(n);
+				if (Settings.nOrientationPin > 0) pinMode(Settings.nOrientationPin, INPUT);
+				break;
+			}
+		}
+		break;
+
+	case 'r':
+	case 'R':
+		LoadSettings();
+		Serial.println(F("Settings reloaded."));
+		ResetMessage();
+		break;
+
+	case 's':
+	case 'S':
+		SaveSettings();
+		Serial.println(F("Settings saved."));
+		break;
+
+	case 't':
+	case 'T':
+		switch (sCommand[1]) {
 		case 's':
 		case 'S':
-			SaveSettings();
-			Serial.println( F("Settings saved."));
+			// set strip type
+			// aWS2812B = 1,
+			// aLPD8806 = 2,
+			Settings.nStripType = (STRIP_TYPE)constrain(sCommand[2] - '0', aWS2812B, aLPD8806);
+			InitStrip();
+
+			Serial.print(F("Strip Type set to ")); Serial.println(Settings.nStripType);
 			break;
 
-		case 't':
-		case 'T':
-			switch( sCommand[1]) {
-				case 's':
-				case 'S':
-					// set strip type
-					// aWS2812B = 1,
-					// aLPD8806 = 2,
-					Settings.nStripType = (STRIP_TYPE) constrain( sCommand[2]-'0', aWS2812B, aLPD8806);
-					InitStrip();
-
-					Serial.print( F("Strip Type set to ")); Serial.println( Settings.nStripType);
-					break;
-
-				case 'x':
-				case 'X':
-					// clear the strip
-					for( n = 0; n < g_nFontPixels; n++) {
-						SetPixel( n, CRGB::Black);
-					}
-					ShowStrip();
-
-					// set new multiplier
-					Settings.nPixelsMulti = constrain( sCommand[2]-'0', 1, 4);
-					//InitStrip();
-
-					Serial.print( F("Pixel Multi set to ")); Serial.println( Settings.nPixelsMulti );
-					break;
+		case 'x':
+		case 'X':
+			// clear the strip
+			for (n = 0; n < g_nFontPixels; n++) {
+				SetPixel(n, CRGB::Black);
 			}
-			break;
+			ShowStrip();
 
-		case 'V':
-		case 'v':
-			// Set full time nav
-			Settings.nFullTimeNav = constrain(sCommand[1] - '0', 0, 1);
-			Serial.print(F("Full time nav set to ")); Serial.println(Settings.nFullTimeNav);
-			break;
+			// set new multiplier
+			Settings.nPixelsMulti = constrain(sCommand[2] - '0', 1, 4);
+			//InitStrip();
 
-		case 'z':
-		case 'Z':
-			n = constrain(atoi( &sCommand[2]), 0, 10);
-			Settings.nOrientationDeadZone = n;
-			Serial.print( F("Orientation deadzone set to ")); Serial.print( n); Serial.println( F(" percent."));
+			Serial.print(F("Pixel Multi set to ")); Serial.println(Settings.nPixelsMulti);
 			break;
+		}
+		break;
 
-		case 'h':
-		case '?':
-			Serial.print( F("fireFly POV - By Buck McGibbony and Paul Drucker - Version ")); Serial.println( VERSION);
-			Serial.println();
-			Serial.println( F("   Bx     - Set font brightness to x (0-9)"));
-			Serial.println( F("   Nx     - Set background brightness to x (0-9)"));
-			Serial.println( F("   Gx     - Set character frame gap (1-9)"));
-			Serial.println( F("   FN=x   - Set frame rate min to x (1-320 fps)"));
-			Serial.println( F("   FX=x   - Set frame rate max to x (1-320 fps)"));
-			Serial.println( F("   Mx=abc - Set message x (1-9) to abc, no quotes"));
-			Serial.println( F("            \\NAV - show nav lights at full bright"));
-			Serial.println( F("   Ax=abc - Set format x (1-9) abc, no quotes"));
-			Serial.println( F("            \\Bn - Font brightness"));
-			Serial.println( F("            \\Nn - Bkgrnd brightness"));
-			Serial.println( F("            \\En - Bkgrnd Effect - 0=Black, 1=Nav, 2=Rainbow, 3=Thrust"));
-			Serial.println( F("            \\Pn - Effect Pallette - 0=Default, 1-6"));
-			Serial.println( F("   Mx     - Select message x (1-5)"));
-			Serial.println( F("   MA=x   - Set number of messages to be active to x (1-5)"));
-			Serial.println( F("   PF=x   - Set frame rate pin to x (0 for none)"));
-			Serial.println( F("   PM=x   - Set message select pin to x (0 - -5 for A0 - A5)"));
-			Serial.println( F("   PO=x   - Set orientation pin to x (0 for none)"));
-			Serial.println( F("   Z=x    - Set orientation deadzone to x (% full range)"));
-			Serial.println( F("   Ixy    - Set paint inverts x = 0(L->R) or 1(R->L)"));
-			Serial.println( F("            and strip orientation y = 0(up) or 1(down)"));
-			Serial.println( F("   TXx    - Set Pixel Multiplier to x (1-4)"));
-			Serial.println( F("   TSx    - Set Strip Type to x (1=WS2812B, 2=LPD8806)"));
-			Serial.println( F("   Vx     - Set full time nav lights (0=off, 1=on)"));
-			Serial.println( F("   C      - Start calibration sequence"));
-			Serial.println( F("   L      - List settings"));
-			Serial.println( F("   D      - Load default settings"));
-			Serial.println( F("   R      - Reload settings from EEPROM"));
-			Serial.println( F("   S      - Save settings to EEPROM"));
-			break;
-	
-		default:
-			Serial.println( F("Command unrecognized.  Type '?' or 'h' for help."));
-			break;
+	case 'V':
+	case 'v':
+		// Set full time nav
+		Settings.nFullTimeNav = constrain(sCommand[1] - '0', 0, 1);
+		Serial.print(F("Full time nav set to ")); Serial.println(Settings.nFullTimeNav);
+		break;
+
+	case 'z':
+	case 'Z':
+		n = constrain(atoi(&sCommand[2]), 0, 10);
+		Settings.nOrientationDeadZone = n;
+		Serial.print(F("Orientation deadzone set to ")); Serial.print(n); Serial.println(F(" percent."));
+		break;
+
+	case 'h':
+	case '?':
+		Serial.print(F("fireFly POV - By Buck McGibbony and Paul Drucker - Version ")); Serial.println(VERSION);
+		Serial.println();
+		Serial.println(F("   Bx     - Set font brightness to x (0-9)"));
+		Serial.println(F("   Nx     - Set background brightness to x (0-9)"));
+		Serial.println(F("   Gx     - Set character frame gap (1-9)"));
+		Serial.println(F("   FN=x   - Set frame rate min to x (1-320 fps)"));
+		Serial.println(F("   FX=x   - Set frame rate max to x (1-320 fps)"));
+		Serial.println(F("   Mx=abc - Set message x (1-9) to abc, no quotes"));
+		Serial.println(F("            \\NAV - show nav lights at full bright"));
+		Serial.println(F("   Ax=abc - Set format x (1-9) abc, no quotes"));
+		Serial.println(F("            \\Bn - Font brightness"));
+		Serial.println(F("            \\Nn - Bkgrnd brightness"));
+		Serial.println(F("            \\En - Bkgrnd Effect - 0=Black, 1=Nav, 2=Rainbow, 3=Thrust"));
+		Serial.println(F("            \\Pn - Effect Pallette - 0=Default, 1-6"));
+		Serial.println(F("   Mx     - Select message x (1-5)"));
+		Serial.println(F("   MA=x   - Set number of messages to be active to x (1-5)"));
+		Serial.println(F("   PF=x   - Set frame rate pin to x (0 for none)"));
+		Serial.println(F("   PM=x   - Set message select pin to x (0 - -5 for A0 - A5)"));
+		Serial.println(F("   PO=x   - Set orientation pin to x (0 for none)"));
+		Serial.println(F("   Z=x    - Set orientation deadzone to x (% full range)"));
+		Serial.println(F("   Ixy    - Set paint inverts x = 0(L->R) or 1(R->L)"));
+		Serial.println(F("            and strip orientation y = 0(up) or 1(down)"));
+		Serial.println(F("   TXx    - Set Pixel Multiplier to x (1-4)"));
+		Serial.println(F("   TSx    - Set Strip Type to x (1=WS2812B, 2=LPD8806)"));
+		Serial.println(F("   Vx     - Set full time nav lights (0=off, 1=on)"));
+		Serial.println(F("   C      - Start calibration sequence"));
+		Serial.println(F("   L      - List settings"));
+		Serial.println(F("   D      - Load default settings"));
+		Serial.println(F("   R      - Reload settings from EEPROM"));
+		Serial.println(F("   S      - Save settings to EEPROM"));
+		break;
+
+	default:
+		Serial.println(F("Command unrecognized.  Type '?' or 'h' for help."));
+		break;
 	}
 
 }
@@ -1113,85 +1104,89 @@ void ProcessCommand( char *sCommand) {
 //  UpdateInputs()
 //
 void UpdateInputs() {
-	
+
+	static unsigned long s_nLastMessageSelectValue = 0;
+	static unsigned long s_nLastPWMFrameRateValue = 0;
+	static byte s_nCurrentInputCheck = 0;
+
 	int n;
 	int nDeltaC;
 	unsigned long n_Raw;
 
-	switch( g_nCurrentInputCheck) {
-		case 0:
-			// frame rate from PWM input?
-			if( Settings.nFrameRatePin > 0) {
-				n_Raw = pulseIn( Settings.nFrameRatePin, HIGH, PWM_TIMEOUT); // no constrain here
-				if( n_Raw == 0) n_Raw = Calibrations.nFrameRate_HighVal;
+	switch (s_nCurrentInputCheck) {
+	case 0:
+		// frame rate from PWM input?
+		if (Settings.nFrameRatePin > 0) {
+			n_Raw = pulseIn(Settings.nFrameRatePin, HIGH, PWM_TIMEOUT); // no constrain here
+			if (n_Raw == 0) n_Raw = Calibrations.nFrameRate_HighVal;
 
-				if( abs(g_nLastPWMFrameRateValue - n_Raw) > PWM_NOISEFLOOR) {
-					g_nLastPWMFrameRateValue = n_Raw;
-					g_nFrameRate = map( n_Raw, Calibrations.nFrameRate_LowVal, Calibrations.nFrameRate_HighVal, Settings.nMinFrameRate, Settings.nMaxFrameRate+1);
+			if (abs(s_nLastPWMFrameRateValue - n_Raw) > PWM_NOISEFLOOR) {
+				s_nLastPWMFrameRateValue = n_Raw;
+				g_nFrameRate = map(n_Raw, Calibrations.nFrameRate_LowVal, Calibrations.nFrameRate_HighVal, Settings.nMinFrameRate, Settings.nMaxFrameRate + 1);
 
-					// calculate plasma settings
-					if (g_nEffectID == 3) {
-						//SPARKING = SPARKING_MIN;
-						//COOLING = COOLING_MAX;
-						SPARKING = map(n_Raw, Calibrations.nFrameRate_LowVal, Calibrations.nFrameRate_HighVal, SPARKING_MIN, SPARKING_MAX);
-						COOLING = map(n_Raw, Calibrations.nFrameRate_LowVal, Calibrations.nFrameRate_HighVal, COOLING_MAX, COOLING_MIN);
-					}
+				// calculate plasma settings
+				if (g_nEffectID == 3) {
+					//SPARKING = SPARKING_MIN;
+					//COOLING = COOLING_MAX;
+					SPARKING = map(n_Raw, Calibrations.nFrameRate_LowVal, Calibrations.nFrameRate_HighVal, SPARKING_MIN, SPARKING_MAX);
+					COOLING = map(n_Raw, Calibrations.nFrameRate_LowVal, Calibrations.nFrameRate_HighVal, COOLING_MAX, COOLING_MIN);
 				}
+			}
 
+		}
+		else {
+			g_nFrameRate = Settings.nMaxFrameRate; // no PWM sensing just use Settings.nMaxFrameRate
+			SPARKING = SPARKING_MAX;
+			COOLING = COOLING_MIN;
+		}
+
+
+		s_nCurrentInputCheck = 1;
+		break;
+
+	case 1:
+		// Pattern select
+		if (Settings.nMessageSelectPin > 0) {
+			n_Raw = pulseIn(Settings.nMessageSelectPin, HIGH, PWM_TIMEOUT); // get PWM value
+		}
+		else {
+			if (Settings.nMessageSelectPin == 0) {
+				n_Raw = 0;
 			}
 			else {
-				g_nFrameRate = Settings.nMaxFrameRate; // no PWM sensing just use Settings.nMaxFrameRate
-				SPARKING = SPARKING_MAX;
-				COOLING = COOLING_MIN;
+				n_Raw = analogRead(abs(Settings.nMessageSelectPin));  // get analog value from pin Ax
 			}
-			
-			
-			g_nCurrentInputCheck = 1;
-			break;
+		}
+		if (n_Raw == 0) n_Raw = Calibrations.nMessageSelect_LowVal;
 
-		case 1:
-			// Pattern select
-			if( Settings.nMessageSelectPin > 0) {
-				n_Raw = pulseIn( Settings.nMessageSelectPin, HIGH, PWM_TIMEOUT); // get PWM value
+		if (abs(s_nLastMessageSelectValue - n_Raw) > PWM_NOISEFLOOR) { // this filters the noise
+			s_nLastMessageSelectValue = n_Raw;
+			n = constrain(map(n_Raw, Calibrations.nMessageSelect_LowVal, Calibrations.nMessageSelect_HighVal, 0, Settings.nNumMessages), 0, Settings.nNumMessages - 1);
+			if (g_nCurrentMessage != n) {
+				g_nCurrentMessage = n;
+				ResetMessage();
 			}
-			else {
-				if (Settings.nMessageSelectPin == 0) {
-					n_Raw = 0;
-				}
-				else {
-					n_Raw = analogRead(abs(Settings.nMessageSelectPin));  // get analog value from pin Ax
-				}
-			}
-			if( n_Raw == 0) n_Raw = Calibrations.nMessageSelect_LowVal;
+		}
+		s_nCurrentInputCheck = 2;
+		break;
 
-			if( abs(g_nLastMessageSelectValue - n_Raw) > PWM_NOISEFLOOR) { // this filters the noise
-				g_nLastMessageSelectValue = n_Raw;
-				n = constrain( map( n_Raw, Calibrations.nMessageSelect_LowVal, Calibrations.nMessageSelect_HighVal, 0, Settings.nNumMessages ), 0, Settings.nNumMessages-1);
-				if( g_nCurrentMessage != n) {
-					g_nCurrentMessage = n;
-					ResetMessage();
+	case 2:
+		// Orientation control from PWM input
+		if (Settings.nOrientationPin > 0) {
+			n_Raw = pulseIn(Settings.nOrientationPin, HIGH, PWM_TIMEOUT); // no constrain here
+			if (n_Raw == 0) n_Raw = Calibrations.nOrientation_HighVal;
+
+			if (abs(g_nLastPWMOrientationValue - n_Raw) > PWM_NOISEFLOOR) {
+				g_nLastPWMOrientationValue = n_Raw;
+				nDeltaC = map(n_Raw, Calibrations.nOrientation_LowVal, Calibrations.nOrientation_HighVal, 0, 101) - Calibrations.nOrientation_Normal; // Use normal as dead center
+				if (abs(nDeltaC) > Settings.nOrientationDeadZone) {
+					// set g_nOrientation based on whether DeltaC is positive or negative
+					g_nOrientation = nDeltaC < 0 ? LOW : HIGH;
 				}
 			}
-			g_nCurrentInputCheck = 2;
-			break;
-
-		case 2:
-			// Orientation control from PWM input
-			if( Settings.nOrientationPin > 0) {
-				n_Raw = pulseIn( Settings.nOrientationPin, HIGH, PWM_TIMEOUT); // no constrain here
-				if( n_Raw == 0) n_Raw = Calibrations.nOrientation_HighVal;
-
-				if( abs(g_nLastPWMOrientationValue - n_Raw) > PWM_NOISEFLOOR) {
-					g_nLastPWMOrientationValue = n_Raw;
-					nDeltaC = map( n_Raw, Calibrations.nOrientation_LowVal, Calibrations.nOrientation_HighVal, 0, 101) - Calibrations.nOrientation_Normal; // Use normal as dead center
-					if( abs( nDeltaC) > Settings.nOrientationDeadZone) {
-						// set g_nOrientation based on whether DeltaC is positive or negative
-						g_nOrientation = nDeltaC < 0 ? LOW : HIGH;
-					}
-				}
-			}
-			g_nCurrentInputCheck = 0;
-			break;
+		}
+		s_nCurrentInputCheck = 0;
+		break;
 
 	}
 }
@@ -1206,86 +1201,86 @@ void CalibrateInputs() {
 	unsigned long n_HighVal;
 	const int nTimeout = 7000; // Calibration timeout in millis
 
-//	void *SettingsBlockStart = &Settings;
+	//	void *SettingsBlockStart = &Settings;
 
-	Serial.print( F("PWM input calibration initiated.  Each step will last ")); Serial.print( nTimeout / 1000); Serial.println( F(" seconds."));
-	
-	if( Settings.nFrameRatePin > 0) {
+	Serial.print(F("PWM input calibration initiated.  Each step will last ")); Serial.print(nTimeout / 1000); Serial.println(F(" seconds."));
+
+	if (Settings.nFrameRatePin > 0) {
 		Serial.println();
-		Serial.print( F(">> Please cycle the FRAME RATE input on pin ")); Serial.println( Settings.nFrameRatePin);
+		Serial.print(F(">> Please cycle the FRAME RATE input on pin ")); Serial.println(Settings.nFrameRatePin);
 
 		n_LowVal = 1500;
 		n_HighVal = 1500;
 		ulTimeNow = millis(); // record entrance time
 		do {
-			n_Raw = pulseIn( Settings.nFrameRatePin, HIGH, PWM_TIMEOUT);
-			if( n_Raw < n_LowVal) n_LowVal = n_Raw;
-			else if( n_Raw > n_HighVal) n_HighVal = n_Raw;
-		} while( millis() - ulTimeNow < nTimeout);
+			n_Raw = pulseIn(Settings.nFrameRatePin, HIGH, PWM_TIMEOUT);
+			if (n_Raw < n_LowVal) n_LowVal = n_Raw;
+			else if (n_Raw > n_HighVal) n_HighVal = n_Raw;
+		} while (millis() - ulTimeNow < nTimeout);
 
 		// did we get some useful data?
-		if( n_LowVal == 1500 || n_HighVal == 1500) {
-			Serial.print( F("TIMEOUT: no PWM input on pin ")); Serial.println( Settings.nFrameRatePin);
+		if (n_LowVal == 1500 || n_HighVal == 1500) {
+			Serial.print(F("TIMEOUT: no PWM input on pin ")); Serial.println(Settings.nFrameRatePin);
 		}
 		// yes we did
 		else {
 			Calibrations.nFrameRate_LowVal = n_LowVal;
 			Calibrations.nFrameRate_HighVal = n_HighVal;
-			Serial.print( F("Frame Rate PWM extents [")); Serial.print( Calibrations.nFrameRate_LowVal); Serial.print( "-"); Serial.print( Calibrations.nFrameRate_HighVal); Serial.println( "]"); 
+			Serial.print(F("Frame Rate PWM extents [")); Serial.print(Calibrations.nFrameRate_LowVal); Serial.print("-"); Serial.print(Calibrations.nFrameRate_HighVal); Serial.println("]");
 		}
 	}
 
 	Serial.println();
-	Serial.print( F(">> Please cycle MESSAGE SELECT on pin ")); Serial.println( Settings.nMessageSelectPin);
+	Serial.print(F(">> Please cycle MESSAGE SELECT on pin ")); Serial.println(Settings.nMessageSelectPin);
 
 	ulTimeNow = millis(); // record entrance time
 
-	if( Settings.nMessageSelectPin > 0) {
+	if (Settings.nMessageSelectPin > 0) {
 		n_LowVal = 1500;
 		n_HighVal = 1500;
 		do {
-			n_Raw = pulseIn( Settings.nMessageSelectPin, HIGH, PWM_TIMEOUT);
-			if( n_Raw < n_LowVal) n_LowVal = n_Raw;
-			else if( n_Raw > n_HighVal) n_HighVal = n_Raw;
-		} while( millis() - ulTimeNow < nTimeout);
+			n_Raw = pulseIn(Settings.nMessageSelectPin, HIGH, PWM_TIMEOUT);
+			if (n_Raw < n_LowVal) n_LowVal = n_Raw;
+			else if (n_Raw > n_HighVal) n_HighVal = n_Raw;
+		} while (millis() - ulTimeNow < nTimeout);
 	}
 	else {
 		n_LowVal = 512;
 		n_HighVal = 512;
 		do {
-			n_Raw = analogRead( abs(Settings.nMessageSelectPin));
-			if( n_Raw < n_LowVal) n_LowVal = n_Raw;
-			else if( n_Raw > n_HighVal) n_HighVal = n_Raw;
-		} while( millis() - ulTimeNow < nTimeout);
+			n_Raw = analogRead(abs(Settings.nMessageSelectPin));
+			if (n_Raw < n_LowVal) n_LowVal = n_Raw;
+			else if (n_Raw > n_HighVal) n_HighVal = n_Raw;
+		} while (millis() - ulTimeNow < nTimeout);
 	}
 
 	// did we get some useful data?
-	if( n_LowVal == 1500 || n_HighVal == 1500 || n_LowVal == 512 || n_HighVal == 512) {
-		Serial.print( F("TIMEOUT: no input on pin ")); Serial.println( Settings.nMessageSelectPin);
+	if (n_LowVal == 1500 || n_HighVal == 1500 || n_LowVal == 512 || n_HighVal == 512) {
+		Serial.print(F("TIMEOUT: no input on pin ")); Serial.println(Settings.nMessageSelectPin);
 	}
 	// yes we did
 	else {
 		Calibrations.nMessageSelect_LowVal = n_LowVal;
 		Calibrations.nMessageSelect_HighVal = n_HighVal;
-		Serial.print( F("Message Select extents were [")); Serial.print( Calibrations.nMessageSelect_LowVal); Serial.print( "-"); Serial.print( Calibrations.nMessageSelect_HighVal); Serial.println( "]"); 
+		Serial.print(F("Message Select extents were [")); Serial.print(Calibrations.nMessageSelect_LowVal); Serial.print("-"); Serial.print(Calibrations.nMessageSelect_HighVal); Serial.println("]");
 	}
 
-	if( Settings.nOrientationPin > 0) {
+	if (Settings.nOrientationPin > 0) {
 		Serial.println();
-		Serial.print( F(">> Please cycle ORIENTATION on pin ")); Serial.println( Settings.nOrientationPin);
+		Serial.print(F(">> Please cycle ORIENTATION on pin ")); Serial.println(Settings.nOrientationPin);
 
 		n_LowVal = 1500;
 		n_HighVal = 1500;
 		ulTimeNow = millis(); // record entrance time
 		do {
-			n_Raw = pulseIn( Settings.nOrientationPin, HIGH, PWM_TIMEOUT);
-			if( n_Raw < n_LowVal) n_LowVal = n_Raw;
-			else if( n_Raw > n_HighVal) n_HighVal = n_Raw;
-		} while( millis() - ulTimeNow < nTimeout);
+			n_Raw = pulseIn(Settings.nOrientationPin, HIGH, PWM_TIMEOUT);
+			if (n_Raw < n_LowVal) n_LowVal = n_Raw;
+			else if (n_Raw > n_HighVal) n_HighVal = n_Raw;
+		} while (millis() - ulTimeNow < nTimeout);
 
 		// did we get some useful data?
-		if( n_LowVal == 1500 || n_HighVal == 1500) {
-			Serial.print( F("TIMEOUT: no PWM input on pin ")); Serial.println( Settings.nOrientationPin);
+		if (n_LowVal == 1500 || n_HighVal == 1500) {
+			Serial.print(F("TIMEOUT: no PWM input on pin ")); Serial.println(Settings.nOrientationPin);
 		}
 		// yes we did
 		else {
@@ -1293,24 +1288,24 @@ void CalibrateInputs() {
 			Calibrations.nOrientation_HighVal = n_HighVal;
 
 			// sample current position to get the normal
-			Serial.println( F("Setting ORIENTATION normal..."));
+			Serial.println(F("Setting ORIENTATION normal..."));
 			ulTimeNow = millis(); // record entrance time
 			do {
-				n_Raw = pulseIn( Settings.nOrientationPin, HIGH, PWM_TIMEOUT);
-				if( n_Raw < n_LowVal) n_LowVal = n_Raw;
-				else if( n_Raw > n_HighVal) n_HighVal = n_Raw;
-			} while( millis() - ulTimeNow < nTimeout / 2);
-			
+				n_Raw = pulseIn(Settings.nOrientationPin, HIGH, PWM_TIMEOUT);
+				if (n_Raw < n_LowVal) n_LowVal = n_Raw;
+				else if (n_Raw > n_HighVal) n_HighVal = n_Raw;
+			} while (millis() - ulTimeNow < nTimeout / 2);
+
 			//get normal value
-			n_Raw = pulseIn( Settings.nOrientationPin, HIGH, PWM_TIMEOUT);
+			n_Raw = pulseIn(Settings.nOrientationPin, HIGH, PWM_TIMEOUT);
 			// map the PWM normal value now so we don't have to remap it every time we use it later on
-			Calibrations.nOrientation_Normal  = map( n_Raw, Calibrations.nOrientation_LowVal, Calibrations.nOrientation_HighVal, 0, 101);
-			Serial.print( F("Orientation PWM extents [")); Serial.print( Calibrations.nOrientation_LowVal); Serial.print( "-"); Serial.print( Calibrations.nOrientation_HighVal); Serial.print( ":"); Serial.print( n_Raw ); Serial.println( "]"); 
+			Calibrations.nOrientation_Normal = map(n_Raw, Calibrations.nOrientation_LowVal, Calibrations.nOrientation_HighVal, 0, 101);
+			Serial.print(F("Orientation PWM extents [")); Serial.print(Calibrations.nOrientation_LowVal); Serial.print("-"); Serial.print(Calibrations.nOrientation_HighVal); Serial.print(":"); Serial.print(n_Raw); Serial.println("]");
 		}
 	}
 
 	// if we made it this far then it must have all worked out
 	// lets save the calibration data to EEPROM
-	Serial.println( F( "Saving calibration data."));
+	Serial.println(F("Saving calibration data."));
 	SaveCalibrations();
 }
