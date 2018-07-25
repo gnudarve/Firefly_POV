@@ -1,0 +1,22 @@
+FireFly POV - Version 1.1 - 3/17/15
+
+Wiring Diagram
+
+Black - Ground
+White - Vcc [5-6vdc]
+Grey - Pin 13 - CL [Strip Clock]
+Purple - Pin 11- DI [Strip Data]
+Blue - Pin 6 - Orientation PWM Input
+Green - Pin 4 - Frame Rate PWM Input
+Yellow - Pin 2 - Message Select PWM Input
+
+
+BlueTooth Module
+
+BT - Nano v3
+Vcc - 3v3
+Gnd - Gnd
+TxD - D8
+RxD - D7 (use a voltage divider to bring it down to 3v)
+Voltage Divider: D7 - 1K - (to module) - 2K - Gnd
+

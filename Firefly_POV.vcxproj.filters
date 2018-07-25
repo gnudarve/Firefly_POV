@@ -18,6 +18,18 @@
     <ClInclude Include="__vm\.Firefly_POV.vsarduino.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="DR1_Racing_Logo_sz64.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="fireFLY_POV_GUI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Lucida_Console.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sexy-young-woman.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Firefly_POV.ino" />
