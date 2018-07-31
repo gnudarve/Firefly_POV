@@ -13,10 +13,6 @@
 #define g_nASCIIStart Lucida_Console_nASCIIStart
 #define g_nASCIIEnd Lucida_Console_nASCIIEnd
 
-// Bitmaps
-#include "DR1_Racing_Logo_sz64.h" // DRL Logo
-_pixelrgb *oBitmapBuffer;
-
 // setup serial class for bluetooth comms, platform dependant
 #if defined(TEENSYDUINO) 
 //  --------------- Teensy -----------------
@@ -39,9 +35,6 @@ _pixelrgb *oBitmapBuffer;
 #define PWM_TIMEOUT 25000UL
 #define PWM_NOISEFLOOR 10
 
-// PWM Sample rate in cycles per second
-const int g_nSampleRate = 30;
-
 #define COOLING_MAX 190
 #define COOLING_MIN 65
 
@@ -54,6 +47,14 @@ int COOLING = COOLING_MAX;
 int SPARKING = SPARKING_MIN;
 
 // Globals
+
+// Bitmaps
+#include "DR1_Racing_Logo_sz64.h" // DRL Logo
+_pixelrgb *oBitmapBuffer;
+
+// PWM Sample rate in cycles per second
+const int g_nSampleRate = 30;
+
 unsigned long g_nLastPWMOrientationValue = 0;
 
 // render states
@@ -263,7 +264,7 @@ void InitStrip() {
 	}
 
 	g_cPixels = new CRGB[Settings.nNumPixels];
-	heat = new uint16_t[Settings.nNumPixels];
+	heat = new uint16_t[Settings.nNumPixels/Settings.nNumSegments];
 	nBitmapScalarMap = new uint16_t[Settings.nNumPixels];
 
 	oBitmapBuffer = (_pixelrgb*)malloc(sizeof(oBitmap));
@@ -525,7 +526,7 @@ inline CRGB Effect_Navigation(int i, uint8_t bright) {
 void Effect_PlasmaThrust(int bright)
 {
 	// Array of temperature readings at each simulation cell
-	int nEffectWidth = g_nFontPixels * Settings.nPixelsMulti;
+	int nEffectWidth = Settings.nNumPixels / Settings.nNumSegments;
 	int nCoolingPrime = (COOLING * 10) / nEffectWidth;
 	CRGBPalette16 cPallette;
 
@@ -566,13 +567,16 @@ void Effect_PlasmaThrust(int bright)
 
 	// Render heat cells with pallette colors
 	//SetPixel(nPixel, ColorFromPalette(HeatColors_p, heat[nPixel]));
+	for (int nSegment = 0; nSegment < Settings.nNumSegments; nSegment++) {
+		for (int j = 0; j < nEffectWidth / 2; j++) {
+			g_cPixels[(nSegment*nEffectWidth) + nEffectWidth / 2 + j] = ColorFromPalette(cPallette, scale8(heat[j * 2], 240), g_nBackBright);
+			g_cPixels[(nSegment*nEffectWidth) + nEffectWidth / 2 - j - 1] = ColorFromPalette(cPallette, scale8(heat[(j * 2) + 1], 240), g_nBackBright);
 
-	for (int j = 0; j < nEffectWidth / 2; j++) {
-		g_cPixels[nEffectWidth / 2 + j] = ColorFromPalette(cPallette, scale8(heat[j * 2], 240), g_nBackBright);
-		g_cPixels[nEffectWidth / 2 - j - 1] = ColorFromPalette(cPallette, scale8(heat[(j * 2) + 1], 240), g_nBackBright);
-		//leds[NUM_LEDS / 2 + j] = HeatColor(heat[j*2]);
-		//leds[NUM_LEDS / 2 - j - 1] = HeatColor(heat[(j*2)+1]);
+			//leds[NUM_LEDS / 2 + j] = HeatColor(heat[j*2]);
+			//leds[NUM_LEDS / 2 - j - 1] = HeatColor(heat[(j*2)+1]);
+		}
 	}
+
 	/*
 	if (g_nFrameRate > (unsigned int)((float)Settings.nMaxFrameRate * SPARKING_THRESH)) {
 	// Glitter sparkles
@@ -594,17 +598,17 @@ void setup() {
 	// open serial ports
 	Serial.begin(USB_BAUD_RATE);
 	
+	// load settings
+	LoadSettings();
+
 	// setup pins
 	if (Settings.nFrameRatePin > 0) pinMode(Settings.nFrameRatePin, INPUT);
 	if (Settings.nMessageSelectPin > 0) pinMode(Settings.nMessageSelectPin, INPUT);
 	if (Settings.nOrientationPin > 0) pinMode(Settings.nOrientationPin, INPUT);
 
-	// load settings
-	LoadSettings();
-
 	//for testing
 	Settings.nNumSegments = 2;
-	Settings.nNumPixels = 144;
+	Settings.nNumPixels = 128;
 	strcpy(Settings.sSegmentSetup, "10");
 
 	// start up the LED strip.
