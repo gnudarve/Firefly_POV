@@ -18,8 +18,37 @@
     <ClInclude Include="__vm\.Firefly_POV.vsarduino.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Lucida_Console.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Firefly_POV.ino" />
+    <None Include="data\index.htm">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="data\main.css">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="data\manifest.json">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="data\WebSocket.js">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="data\settings.htm">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="data\apple-touch-icon-180x180.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="data\favicon.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="data\favicon-144x144.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

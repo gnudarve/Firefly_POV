@@ -1,0 +1,64 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>LightBrush</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="/main.css">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="144x144"  href="/favicon-144x144.png">
+    <link rel="icon" type="image/x-icon" sizes="48x48" href="/favicon.ico">
+    <link rel="manifest" href="/manifest.json">
+    <script id="page globals">
+        var bAlarmEnable = false;
+
+        // local updaters
+        setInterval(function () {
+            //send request for stats update
+            var valstr = '{"ID":"!Req","Value":"news"}';
+            sendMessage(valstr);
+        }, 1000);
+    </script>
+    <script src="WebSocket.js" type="text/javascript"></script>
+</head>
+<body onload="UpdateElements();">
+    <a href="javascript:window.location.reload()"><h2>LightBrush</h2></a>
+    <h3><span id="stats">%STATS%</span></h3>
+    <div>
+        <header>
+            <h1>Controls</h1>
+        </header>
+        <p>
+            <span style="float: left; line-height: 20px; font-size: 14pt; font-weight: bold">Message Select</span>
+            <span id="MessageSelect_View" style="float: right; line-height: 20px; font-size: 14pt; font-weight: bold">%MessageSelect%</span>
+            <span style="line-height: 70px;"><input id="MessageSelect" class="enabled" type="range" min="1" max="%NumMessages%" step="1" oninput="sendMessageSelect();" value="%MessageSelect%"></span>
+
+            <span style="float: left; line-height: 20px; font-size: 14pt; font-weight: bold">Brightness</span>
+            <span id="Brightness_View" style="float: right; line-height: 20px; font-size: 14pt; font-weight: bold">%Brightness%</span>
+            <span style="line-height: 70px;"><input id="Brightness" class="enabled" type="range" min="0" max="10" step="1" oninput="sendBrightness();" value="%Brightness%"></span>
+
+            <span style="float: left; line-height: 20px; font-size: 14pt; font-weight: bold">Background</span>
+            <span id="Background_View" style="float: right; line-height: 20px; font-size: 14pt; font-weight: bold">%Background%</span>
+            <span style="line-height: 70px;"><input id="Background" class="enabled" type="range" min="0" max="10" step="1" oninput="sendBackground();" value="%Background%"></span>
+
+            <span style="float: left; line-height: 20px; font-size: 14pt; font-weight: bold">
+                Nav Lights:
+                <button class="button" style=font-size: 14px;" onclick="sendCommand('V1')">On</button>
+                <button class="button" style=font-size: 14px;" onclick="sendCommand('V0')">Off</button>
+            </span>
+        </p>
+        <br>
+        <h3>
+            Message <input id="M_1" class="enabled" type="text" size="32" oninput="sendMessageEdit();" value="%M_1%">
+        <br>Format <input id="A_1" class="enabled" type="text" size="12" oninput="sendFormatEdit();" value="%A_1%">
+        </h3>
+        <p>
+            <button id="Alarm_Active" class="button" style="background-color:#999" onclick="AlarmToggle();">Controls Active</button>
+            <button id="Set_Defaults" class="button" style="background-color:#00878F" onclick="sendCommand('S');">Set Defaults</button>
+        </p>
+    </div>
+
+    <button class="button" style="background-color:#00878F" onClick="window.location='/settings.htm';">Settings</button>
+
+    <br><a href="http://wisewerks.com"><h3>Powered by WiseWerks</h3></a>
+</body>
+</html>

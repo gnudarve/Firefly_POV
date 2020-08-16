@@ -1,0 +1,36 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>LightBrush Settings</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="/main.css">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="144x144" href="/favicon-144x144.png">
+    <link rel="icon" type="image/x-icon" sizes="48x48" href="/favicon.ico">
+    <link rel="manifest" href="/manifest.json">
+    <script src="WebSocket.js" type="text/javascript"></script>
+</head>
+<body>
+    <div>
+        <header>
+            <h1>Settings</h1>
+        </header>
+        <h3>
+            Max Frame Rate: <input id="Max_Frame_Rate" class="enabled" type="text" size="2" value="%Max_Frame_Rate%">
+            <button class="button" style="font-size: 12px;" onclick="sendCommand('FX=' + document.getElementById('Max_Frame_Rate').value);">Set</button>
+            <br>
+            Min Frame Rate: <input id="Min_Frame_Rate" class="enabled" type="text" size="2" value="%Min_Frame_Rate%">
+            <button class="button" style="font-size: 12px;" onclick="sendCommand('FN=' + document.getElementById('Min_Frame_Rate').value);">Set</button>
+            <br>
+            Num Pixels: <input id="Num_Pixels" class="enabled" type="text" size="2" value="%Num_Pixels%">
+            <button class="button" style="font-size: 12px;" onclick="sendCommand('E=' + document.getElementById('Num_Pixels').value);">Set</button>
+            <br>
+            Frame Rate Pin (0 for none): <input id="Frame_Rate_Pin" class="enabled" type="text" size="2" value="%Frame_Rate_Pin%">
+            <button class="button" style="font-size: 12px;" onclick="sendCommand('PF=' + document.getElementById('Frame_Rate_Pin').value);">Set</button>
+        </h3>
+        <button class="button" onclick="sendCommand('S');">Save Settings</button>
+    </div>
+
+    <button class="button" onclick="history.back()"><< Go Back</button>
+</body>
+</html>
