@@ -2,6 +2,7 @@
 //
 //
 
+
 #include <dummy.h>
 #include <FastLED.h>
 
@@ -652,8 +653,8 @@ void setup() {
 	digitalWrite(LED_BUILTIN, HIGH);
 
 	// setup pins
-	Settings.nFrameRatePin = 0;
-	Serial.printf("Settings.nFrameRatePin=%d  Settings.nMessageSelectPin=%d  Settings.nOrientationPin=%d\r\n", Settings.nFrameRatePin, Settings.nMessageSelectPin, Settings.nOrientationPin);
+	//Settings.nFrameRatePin = 0;
+	//Serial.printf("Settings.nFrameRatePin=%d  Settings.nMessageSelectPin=%d  Settings.nOrientationPin=%d\r\n", Settings.nFrameRatePin, Settings.nMessageSelectPin, Settings.nOrientationPin);
 	if (Settings.nFrameRatePin > 0) pinMode(Settings.nFrameRatePin, INPUT);
 	if (Settings.nMessageSelectPin > 0) pinMode(Settings.nMessageSelectPin, INPUT);
 	if (Settings.nOrientationPin > 0) pinMode(Settings.nOrientationPin, INPUT);
@@ -719,9 +720,8 @@ void startWebSocket() {
 void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length) {
 
 	String sOutputBuffer;
-	DynamicJsonBuffer jsonBuffer;
-	String sID;
-	String sVal;
+	//DynamicJsonBuffer jsonBuffer;
+	StaticJsonDocument<256> jsonBuffer;
 
 	digitalWrite(LED_BUILTIN, LOW);
 
@@ -742,13 +742,13 @@ void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length
 	case WStype_TEXT:
 		//Serial.printf("WStype_TEXT from %u: %s\r\n", num, payload);
 
-		JsonObject& root = jsonBuffer.parseObject(payload);
+		deserializeJson(jsonBuffer, payload);
 
 		// capture json data
-		sID = root["ID"].asString();
-		sVal = root["Value"].asString();
+		String sID = String((const char*) jsonBuffer["ID"]);
+		String sVal = String((const char*) jsonBuffer["Value"]);
 		
-		//Serial.printf("[%s]:[%s]\r\n", sID.c_str(), sVal.c_str());
+		Serial.printf("[%s]:[%s]\r\n", sID.c_str(), sVal.c_str());
 
 		// ID scan 
 		// set ID var to passed value

@@ -9,8 +9,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ESP8266WiFi-1.0", "C:\Users
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FastLED-master-3.3.3", "..\libraries\FastLED-master\FastLED-master-3.3.3.vcxitems", "{2D6BFA09-B396-4153-A71F-9F54D436F66D}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ArduinoJson-5.13.2", "..\libraries\ArduinoJson\ArduinoJson-5.13.2.vcxitems", "{FFDD3C40-1C0E-4EF9-AD91-408EAB898BC9}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EEPROM-1.0", "..\libraries\EEPROM\EEPROM-1.0.vcxitems", "{DF8DA610-CD58-4508-9A4F-72A43D93448C}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ESPAsyncTCP-master-1.2.2", "..\libraries\ESPAsyncTCP-master\ESPAsyncTCP-master-1.2.2.vcxitems", "{6E8185E1-600C-48E1-B4C2-F4AD35FDAA83}"
@@ -31,7 +29,6 @@ Global
 		C:\Users\Buck\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.3\libraries\DNSServer\DNSServer-1.1.1.vcxitems*{4e22ba63-c53a-43d6-b091-e86a016c3580}*SharedItemsImports = 4
 		C:\Users\Buck\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.3\libraries\ESP8266WiFi\ESP8266WiFi-1.0.vcxitems*{4e22ba63-c53a-43d6-b091-e86a016c3580}*SharedItemsImports = 4
 		C:\Users\Buck\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.3\libraries\esp8266\esp8266-1.0.vcxitems*{4e22ba63-c53a-43d6-b091-e86a016c3580}*SharedItemsImports = 4
-		..\libraries\ArduinoJson\ArduinoJson-5.13.2.vcxitems*{4e22ba63-c53a-43d6-b091-e86a016c3580}*SharedItemsImports = 4
 		..\libraries\arduinoWebSockets-master\arduinoWebSockets-master-2.2.1.vcxitems*{4e22ba63-c53a-43d6-b091-e86a016c3580}*SharedItemsImports = 4
 		..\libraries\EEPROM\EEPROM-1.0.vcxitems*{4e22ba63-c53a-43d6-b091-e86a016c3580}*SharedItemsImports = 4
 		..\libraries\ESPAsyncTCP-master\ESPAsyncTCP-master-1.2.2.vcxitems*{4e22ba63-c53a-43d6-b091-e86a016c3580}*SharedItemsImports = 4
@@ -46,7 +43,6 @@ Global
 		..\libraries\ESPAsyncWebServer-master\ESPAsyncWebServer-master-1.2.3.vcxitems*{d5cb488c-7ab9-4048-8a29-b3ed1712b92e}*SharedItemsImports = 9
 		..\libraries\EEPROM\EEPROM-1.0.vcxitems*{df8da610-cd58-4508-9a4f-72a43d93448c}*SharedItemsImports = 9
 		C:\Users\Buck\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.3\libraries\ESP8266WiFi\ESP8266WiFi-1.0.vcxitems*{f587929d-1446-48f5-9cc8-dedf37be1f3b}*SharedItemsImports = 9
-		..\libraries\ArduinoJson\ArduinoJson-5.13.2.vcxitems*{ffdd3c40-1c0e-4ef9-ad91-408eab898bc9}*SharedItemsImports = 9
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32

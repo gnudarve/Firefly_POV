@@ -100,7 +100,7 @@ function sendBrightness() {
     else {
         document.getElementById("Brightness_View").innerHTML = val;
     }
-    var valstr = '{"ID":"Brightness","Value":' + val + '}';
+    var valstr = '{"ID":"Brightness","Value":"' + val + '"}';
     sendMessage(valstr);
 }
 
@@ -116,7 +116,7 @@ function sendBackground() {
     else {
         document.getElementById("Background_View").innerHTML = val;
     }
-    var valstr = '{"ID":"Background","Value":' + val + '}';
+    var valstr = '{"ID":"Background","Value":"' + val + '"}';
     sendMessage(valstr);
 }
 
@@ -136,13 +136,13 @@ function sendMessageSelect() {
     document.getElementById('Set_Defaults').style.backgroundColor = '#00878F';
     var val = document.getElementById('MessageSelect').value;
     document.getElementById('MessageSelect_View').innerHTML = val;
-    var valstr = '{"ID":"MessageSelect","Value":' + val + '}';
+    var valstr = '{"ID":"MessageSelect","Value":"' + val + '"}';
     sendMessage(valstr);
 }
 
 function AlarmToggle() {
     bAlarmEnable = !bAlarmEnable;
-    var valstr = '{"ID":"Alarm","Value":' + bAlarmEnable + '}';
+    var valstr = '{"ID":"Alarm","Value":"' + bAlarmEnable + '"}';
     UpdateElements();
 }
 
