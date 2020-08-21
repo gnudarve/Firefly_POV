@@ -748,7 +748,7 @@ void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length
 		String sID = String((const char*) jsonBuffer["ID"]);
 		String sVal = String((const char*) jsonBuffer["Value"]);
 		
-		Serial.printf("[%s]:[%s]\r\n", sID.c_str(), sVal.c_str());
+		//Serial.printf("[%s]:[%s]\r\n", sID.c_str(), sVal.c_str());
 
 		// ID scan 
 		// set ID var to passed value
