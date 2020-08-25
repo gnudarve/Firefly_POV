@@ -1,0 +1,35 @@
+
+Control Page
+   Mx     - Select message x (1-5)
+   Bx     - Set font brightness to x (0-9)
+   Nx     - Set background brightness to x (0-9)
+   Vx     - Set full time nav lights (0=off, 1=on)
+   Mx=abc - Set message x (1-9) to abc, no quotes
+   Ax=abc - Set format x (1-9) abc, no quotes
+            /Bn - Font brightness
+            /Nn - Bkgrnd brightness
+            /En - Bkgrnd Effect - 0=Black, 1=Nav, 2=Rainbow, 3=Thrust
+            /Pn - Effect Pallette - 0=Default, 1-6
+
+Settings Page
+   FX=x   - Set frame rate max to x (1-320 fps)
+   FN=x   - Set frame rate min to x (1-320 fps)
+   E=x    - Set number of pixels to x
+   TXx    - Set Pixel Multiplier to x (1-4)
+   Gx     - Set character frame gap (1-9)
+   MA=x   - Set number of messages to be active to x (1-9)
+   Z=x    - Set orientation deadzone to x (% full range)
+   Ixy    - Set paint inverts x = 0(L->R) or 1(R->L)
+            and strip orientation y = 0(up) or 1(down)
+   TSx    - Set Strip Type to x (1=WS2812B, 2=LPD8806)
+
+   PF=x   - Set frame rate pin to x (0 for none)
+   PM=x   - Set message select pin to x (0 - -5 for A0 - A5)
+   PO=x   - Set orientation pin to x (0 for none)
+
+   S      - Save settings to EEPROM
+   R      - Reload settings from EEPROM
+
+ToDo
+   C      - Start calibration sequence
+   D      - Load default settings

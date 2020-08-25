@@ -25,12 +25,41 @@
             Num Pixels: <input id="Num_Pixels" class="enabled" type="text" size="2" value="%Num_Pixels%">
             <button class="button" style="font-size: 12px;" onclick="sendCommand('E=' + document.getElementById('Num_Pixels').value);">Set</button>
             <br>
+            Pixel Multiplier (1-4): <input id="Pixel_Multi" class="enabled" type="text" size="2" value="%Pixel_Multi%">
+            <button class="button" style="font-size: 12px;" onclick="sendCommand('TX' + document.getElementById('Pixel_Multi').value);">Set</button>
+            <br>
+            Character Spacing (1-9): <input id="Char_Frame_Gap" class="enabled" type="text" size="2" value="%Char_Frame_Gap%">
+            <button class="button" style="font-size: 12px;" onclick="sendCommand('G' + document.getElementById('Char_Frame_Gap').value);">Set</button>
+            <br>
+            Active Messages (1-9): <input id="Num_Messages" class="enabled" type="text" size="2" value="%Num_Messages%">
+            <button class="button" style="font-size: 12px;" onclick="sendCommand('MA=' + document.getElementById('Num_Messages').value);">Set</button>
+            <br>
+            Orientation Deadzone (%% full range): <input id="Orientation_Deadzone" class="enabled" type="text" size="2" value="%Orientation_Deadzone%">
+            <button class="button" style="font-size: 12px;" onclick="sendCommand('Z=' + document.getElementById('Orientation_Deadzone').value);">Set</button>
+            <br>
+            Orientation Inverts (xy): <input id="Orientation_Inverts" class="enabled" type="text" size="2" value="%Orientation_Inverts%">
+            <button class="button" style="font-size: 12px;" onclick="sendCommand('I' + document.getElementById('Orientation_Inverts').value);">Set</button>
+            <br>x = 0(L->R) or 1(R->L) y = 0(up) or 1(down)
+            <br>
+            Strip Type (1=WS2812B, 2=LPD8806): <input id="Strip_Type" class="enabled" type="text" size="2" value="%Strip_Type%">
+            <button class="button" style="font-size: 12px;" onclick="sendCommand('TS' + document.getElementById('Strip_Type').value);">Set</button>
+
+            <br>
+            <br>
             Frame Rate Pin (0 for none): <input id="Frame_Rate_Pin" class="enabled" type="text" size="2" value="%Frame_Rate_Pin%">
             <button class="button" style="font-size: 12px;" onclick="sendCommand('PF=' + document.getElementById('Frame_Rate_Pin').value);">Set</button>
+            <br>
+            Message Select Pin (0 - -5 for A0 - A5): <input id="Message_Select_Pin" class="enabled" type="text" size="2" value="%Message_Select_Pin%">
+            <button class="button" style="font-size: 12px;" onclick="sendCommand('PM=' + document.getElementById('Message_Select_Pin').value);">Set</button>
+            <br>
+            Orientation Pin (0 for none): <input id="Orientation_Pin" class="enabled" type="text" size="2" value="%Orientation_Pin%">
+            <button class="button" style="font-size: 12px;" onclick="sendCommand('PO=' + document.getElementById('Orientation_Pin').value);">Set</button>
         </h3>
-        <button class="button" onclick="sendCommand('S');">Save Settings</button>
+        <button class="button" onclick="sendCommand('S');">Save</button>
+        <button class="button" onclick="sendCommand('R'); window.location.reload();">Reset</button>
     </div>
 
-    <button class="button" onclick="history.back()"><< Go Back</button>
+    <br>
+    <button class="button" onclick="history.back()">LightBrush</button>
 </body>
 </html>

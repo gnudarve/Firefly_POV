@@ -17,8 +17,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ESPAsyncWebServer-master-1.
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "arduinoWebSockets-master-2.2.1", "..\libraries\arduinoWebSockets-master\arduinoWebSockets-master-2.2.1.vcxitems", "{74F9048C-A6D1-4B0F-903E-F67F67AEFA2F}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Hash-1.0", "..\libraries\Hash\Hash-1.0.vcxitems", "{8E1FEB57-9532-4818-A7DB-956DDE9A1DC9}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DNSServer-1.1.1", "C:\Users\Buck\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.3\libraries\DNSServer\DNSServer-1.1.1.vcxitems", "{625254C4-356A-418C-B00E-763DD011FBF4}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "esp8266-1.0", "C:\Users\Buck\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.3\libraries\esp8266\esp8266-1.0.vcxitems", "{840E7752-7686-431F-BF5E-BB9B241DCB78}"
@@ -34,12 +32,10 @@ Global
 		..\libraries\ESPAsyncTCP-master\ESPAsyncTCP-master-1.2.2.vcxitems*{4e22ba63-c53a-43d6-b091-e86a016c3580}*SharedItemsImports = 4
 		..\libraries\ESPAsyncWebServer-master\ESPAsyncWebServer-master-1.2.3.vcxitems*{4e22ba63-c53a-43d6-b091-e86a016c3580}*SharedItemsImports = 4
 		..\libraries\FastLED-master\FastLED-master-3.3.3.vcxitems*{4e22ba63-c53a-43d6-b091-e86a016c3580}*SharedItemsImports = 4
-		..\libraries\Hash\Hash-1.0.vcxitems*{4e22ba63-c53a-43d6-b091-e86a016c3580}*SharedItemsImports = 4
 		C:\Users\Buck\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.3\libraries\DNSServer\DNSServer-1.1.1.vcxitems*{625254c4-356a-418c-b00e-763dd011fbf4}*SharedItemsImports = 9
 		..\libraries\ESPAsyncTCP-master\ESPAsyncTCP-master-1.2.2.vcxitems*{6e8185e1-600c-48e1-b4c2-f4ad35fdaa83}*SharedItemsImports = 9
 		..\libraries\arduinoWebSockets-master\arduinoWebSockets-master-2.2.1.vcxitems*{74f9048c-a6d1-4b0f-903e-f67f67aefa2f}*SharedItemsImports = 9
 		C:\Users\Buck\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.3\libraries\esp8266\esp8266-1.0.vcxitems*{840e7752-7686-431f-bf5e-bb9b241dcb78}*SharedItemsImports = 9
-		..\libraries\Hash\Hash-1.0.vcxitems*{8e1feb57-9532-4818-a7db-956dde9a1dc9}*SharedItemsImports = 9
 		..\libraries\ESPAsyncWebServer-master\ESPAsyncWebServer-master-1.2.3.vcxitems*{d5cb488c-7ab9-4048-8a29-b3ed1712b92e}*SharedItemsImports = 9
 		..\libraries\EEPROM\EEPROM-1.0.vcxitems*{df8da610-cd58-4508-9a4f-72a43d93448c}*SharedItemsImports = 9
 		C:\Users\Buck\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.3\libraries\ESP8266WiFi\ESP8266WiFi-1.0.vcxitems*{f587929d-1446-48f5-9cc8-dedf37be1f3b}*SharedItemsImports = 9

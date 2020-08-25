@@ -988,7 +988,7 @@ String processor(const String& var) {
 	if (var == "STATS") {
 		return String(g_sStatusMsg);
 	}
-	else if (var == "NumMessages") {
+	else if (var == "Num_Messages") {
 		return String(Settings.nNumMessages);
 	}
 	else if (var == "MessageSelect") {
@@ -1004,6 +1004,12 @@ String processor(const String& var) {
 		else if (Settings.nBackBrightness == 10) return "Full";
 		else return String(Settings.nBackBrightness);
 	}
+	else if (var == "M_1") {
+		return String(Settings.sMessage[g_nCurrentMessage]);
+	}
+	else if (var == "A_1") {
+		return String(Settings.sFormat[g_nCurrentMessage]);
+	}
 	else if (var == "Min_Frame_Rate") {
 		return String(Settings.nMinFrameRate);
 	}
@@ -1013,17 +1019,32 @@ String processor(const String& var) {
 	else if (var == "Num_Pixels") {
 		return String(Settings.nNumPixels);
 	}
-	else if (var == "Frame_Rate_Pin") {
-		return String(Settings.nFrameRatePin);
-	}
 	else if (var == "Full_Time_Nav") {
 		return String(Settings.nFullTimeNav);
 	}
-	else if (var == "M_1") {
-		return String(Settings.sMessage[g_nCurrentMessage]);
+	else if (var == "Pixel_Multi") {
+		return String(Settings.nPixelsMulti);
 	}
-	else if (var == "A_1") {
-		return String(Settings.sFormat[g_nCurrentMessage]);
+	else if (var == "Char_Frame_Gap") {
+		return String(Settings.nInterCharFrameGap);
+	}
+	else if (var == "Orientation_Deadzone") {
+		return String(Settings.nOrientationDeadZone);
+	}
+	else if (var == "Orientation_Inverts") {
+		return String((Settings.nOrientationInverts & 2) >> 1) + String(Settings.nOrientationInverts & 1);
+	}
+	else if (var == "Strip_Type") {
+		return String(Settings.nStripType);
+	}
+	else if (var == "Frame_Rate_Pin") {
+		return String(Settings.nFrameRatePin);
+	}
+	else if (var == "Message_Select_Pin") {
+		return String(Settings.nMessageSelectPin);
+	}
+	else if (var == "Orientation_Pin") {
+		return String(Settings.nOrientationPin);
 	}
 	else {
 		Serial.print("processor: %"); Serial.print(var); Serial.println("% not found.");
